@@ -11,5 +11,6 @@
 
 #include "global.h"
 #include "serverState.h"
+#include "sigint.h"
 
 #endif // INCLUDES_H

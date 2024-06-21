@@ -5,7 +5,8 @@ typedef enum {
     INIT,
     PLAY,
     PAUSE,
-    ERROR    
+    ERROR,
+    EXIT   
 } ServerState;
 
 #endif SERVERSTATE_H

@@ -1,12 +1,8 @@
 #include <stdio.h>
 
-void init(int port) {
-    loadMatrices();
+void initServer(int port, char *filename) {
+    loadMatrices(filename);
     initSocket(port);
-}
-
-void loadMatrices(char *filename, ...) {
-    
 }
 
 void initSocket(int port) {
@@ -33,4 +29,8 @@ void initSocket(int port) {
         exit(EXIT_FAILURE);
     }
     printf("Server in ascolto sulla porta %d.\n", port);
+}
+
+void loadMatrices(char *filename, ...) {
+    
 }

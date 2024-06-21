@@ -7,8 +7,7 @@ pthread_mutex_t currentState_mtx = PTHREAD_MUTEX_INITIALIZER;
 char currentWord[10] = "         ";
 ServerState currentState = INIT;
 
-
-
 int main(void) {
-    printf("Hello World!\n");
+    // TODO - numero porta da CLI
+    initServer(12345, NULL);
 }

@@ -1,10 +1,13 @@
 #include "includes.h"
 
 void initServer(int port, char *filename) {
+    printf("Inizio avvio server.\n");
     loadMatrices(filename);
     initSocket(port);
 }
 
+// TODO - implementare per bene. Dopo che il socket e' partito,
+// come accetto le connessioni dei client?
 void initSocket(int port) {
     // crea il socket
     int server = socket(AF_INET, SOCK_STREAM, 0);
@@ -32,5 +35,5 @@ void initSocket(int port) {
 }
 
 void loadMatrices(char *filename, ...) {
-    
+    printf("Matrici caricate.\n");
 }

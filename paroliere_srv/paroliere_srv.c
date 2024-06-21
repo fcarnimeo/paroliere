@@ -8,6 +8,9 @@ char currentWord[10] = "         ";
 ServerState currentState = INIT;
 
 int main(void) {
-    // TODO - numero porta da CLI
-    initServer(12345, NULL);
+    // TODO - controllare il while (true) e initServer()
+    while (true) {
+        // TODO - numero porta da CLI
+        initServer(12345, NULL);
+    }
 }

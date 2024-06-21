@@ -9,4 +9,4 @@ typedef enum {
     EXIT   
 } ServerState;
 
-#endif SERVERSTATE_H
+#endif // SERVERSTATE_H

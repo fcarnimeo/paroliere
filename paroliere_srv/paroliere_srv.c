@@ -50,8 +50,8 @@ int main(int argc, char **argv) {
                 exit(EXIT_FAILURE);
         }
     }
-    // controlla che il comando abbia i parametri obbligatori
-    if (optind + 2 > argc) {
+    // controlla che il comando abbia il giusto numero di parametri obbligatori
+    if (argc != optind + 2) {
         printUsage(argv[0]);
         exit(EXIT_FAILURE);
     }

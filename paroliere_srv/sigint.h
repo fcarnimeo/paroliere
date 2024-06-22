@@ -1,1 +1,1 @@
-void sigintHandler ();
+void sigintHandler (int sig);

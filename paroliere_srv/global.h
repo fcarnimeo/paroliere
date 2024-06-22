@@ -2,6 +2,7 @@
 #define GLOBAL_H
 
 #include "includes.h"
+#include "serverState.h"
 
 // crea le mutex
 pthread_mutex_t currentWord_mtx = PTHREAD_MUTEX_INITIALIZER;

@@ -1,6 +1,7 @@
 #include "includes.h"
 
-void sigintHandler() {
-    printf("Ricevuto SIGINT (CTRL-C). Inizio spegnimento del server.\n");
+void sigintHandler(int sig) {
+    printf("Ricevuto segnale %d - SIGINT - (CTRL-C)." 
+    "Inizio spegnimento del server.\n", sig);
     currentState = EXIT;
 }

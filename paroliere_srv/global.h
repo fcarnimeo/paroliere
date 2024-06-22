@@ -1,8 +1,6 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#include "includes.h"
-
 typedef enum {
     INIT,
     PLAY,
@@ -12,7 +10,7 @@ typedef enum {
 } ServerState;
 
 // dichiara le variabili globali
-extern char currentWord[10];
-extern volatile ServerState currentState;
+//extern char currentWord[10];
+//extern volatile ServerState currentState;
 
 #endif // GLOBAL_H

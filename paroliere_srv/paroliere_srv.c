@@ -1,14 +1,8 @@
 #include "includes.h"
 
 void printUsage(const char *programName);
+void sigintHandler(int sig);
 int str2portNumber(char *portaServer);
-/*
-void sigintHandler(int sig) {
-    printf("Ricevuto segnale %d - SIGINT - (CTRL-C)." 
-    "Inizio spegnimento del server.\n", sig);
-    currentState = EXIT;
-}
-*/
 
 int main(int argc, char **argv) {
     char *dataFilename, *dizionarioFilename, *nomeServer;
@@ -49,6 +43,7 @@ int main(int argc, char **argv) {
     }
     // controlla che il comando sia stato lanciato correttamente
     if (optind + 2 > argc) {
+        perror("Errore: numero parametri insufficiente.\n");
         printUsage(argv[0]);
         exit(EXIT_FAILURE);
     }
@@ -57,7 +52,7 @@ int main(int argc, char **argv) {
     portaServer = str2portNumber(argv[++optind]);
     // esci se il numero porta non e' valido
     if (portaServer < 0) {
-        perror("Errore: numero porta non valido." 
+        perror("Errore: numero porta non valido. " 
         "Inserire valure tra 1025 e 65535.\n");
         printUsage(argv[0]);
         exit(EXIT_FAILURE);
@@ -79,6 +74,18 @@ int main(int argc, char **argv) {
     */
 }
 
+// stampa la corretta invocazione di `paroliere_srv`
+void printUsage(const char *programName) {
+    printf("Comando: %s nome_server porta_server [--matrici data_filename" "--durata durata_in_minuti] [--seed rnd_seed] [--diz dizionario]" 
+    "[--disconnetti-dopo tempo_in_minuti]\n", programName);
+}
+
+void sigintHandler(int sig) {
+    printf("Ricevuto segnale %d - SIGINT - (CTRL-C)." 
+    "Inizio spegnimento del server.\n", sig);
+    currentState = EXIT;
+}
+
 // converti una stringa in numero porta valido per il server [1025-65535]
 // restituisci -1 in caso di insuccesso
 int str2portNumber(char *portaServer) {
@@ -93,10 +100,4 @@ int str2portNumber(char *portaServer) {
         return -1;
     // se sono arrivato qui, il numero porta e' corretto
     return p;
-}
-
-// stampa la corretta invocazione di `paroliere_srv`
-void printUsage(const char *programName) {
-    printf("Comando: %s nome_server porta_server [--matrici data_filename" "--durata durata_in_minuti] [--seed rnd_seed] [--diz dizionario]" 
-    "[--disconnetti-dopo tempo_in_minuti]\n", programName);
 }

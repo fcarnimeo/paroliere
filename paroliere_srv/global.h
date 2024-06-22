@@ -3,7 +3,7 @@
 
 #include "includes.h"
 
-static typedef enum {
+typedef enum {
     INIT,
     PLAY,
     PAUSE,
@@ -12,8 +12,7 @@ static typedef enum {
 } ServerState;
 
 // dichiara le variabili globali
-// TODO - extern?
-char currentWord[10];
-volatile ServerState currentState;
+extern char currentWord[10];
+extern volatile ServerState currentState;
 
 #endif // GLOBAL_H

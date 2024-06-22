@@ -1,5 +1,12 @@
 #include "includes.h"
 
+// variabili globali
+volatile ServerState currentState = INIT;
+char *currentWord = "         ";
+pthread_mutex_t currentState_mtx = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t currentWord_mtx = PTHREAD_MUTEX_INITIALIZER;
+
+// prototipi di funzioni
 void printUsage(const char *programName);
 void sigintHandler(int sig);
 int str2portNumber(char *portaServer);

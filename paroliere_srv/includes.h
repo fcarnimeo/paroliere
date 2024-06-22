@@ -14,7 +14,7 @@
 #include <sys/select.h>
 #include <sys/socket.h>
 
-#include "global.h"
 #include "init.h"
+#include "serverState.h"
 
 #endif // INCLUDES_H

@@ -1,14 +1,19 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#include "serverState.h"
+#include "includes.h"
 
-// crea le mutex
-pthread_mutex_t currentWord_mtx = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t currentState_mtx = PTHREAD_MUTEX_INITIALIZER;
-// inizializza le variabili globali
+static typedef enum {
+    INIT,
+    PLAY,
+    PAUSE,
+    ERROR,
+    EXIT   
+} ServerState;
+
+// dichiara le variabili globali
 // TODO - extern?
-char currentWord[10] = "         ";
-volatile ServerState currentState = INIT;
+char currentWord[10];
+volatile ServerState currentState;
 
 #endif // GLOBAL_H

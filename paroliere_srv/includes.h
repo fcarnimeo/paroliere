@@ -16,6 +16,5 @@
 
 #include "global.h"
 #include "init.h"
-#include "serverState.h"
 
 #endif // INCLUDES_H

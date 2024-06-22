@@ -2,6 +2,7 @@
 #define INCLUDES_H
 
 #include <getopt.h>
+#include <limits.h>
 #include <pthread.h>
 #include <signal.h>
 #include <stdbool.h>

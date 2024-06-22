@@ -73,11 +73,7 @@ int main(int argc, char **argv) {
     }
 
     // TODO - controllare il while (true) e initServer()
-    /*
-    while (true) {
-        initServer(portaServer, NULL);
-    }
-    */
+    initServer(portaServer, dataFilename);
 }
 
 // stampa la corretta invocazione di `paroliere_srv`

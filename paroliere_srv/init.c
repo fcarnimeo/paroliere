@@ -3,7 +3,7 @@
 void initServer(int port, char *filename) {
     printf("Inizio avvio server.\n");
     loadMatrices(filename);
-    initSocket(port);
+    //initSocket(port);
 }
 
 // TODO - implementare per bene. Dopo che il socket e' partito,
@@ -35,5 +35,22 @@ void initSocket(int port) {
 }
 
 void loadMatrices(char *filename) {
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t bytesRead;
+
+    // apri il file in lettura
+    FILE *file = fopen(filename, "r");
+    // controlla che il file e' aperto correttamente
+    if (file == NULL) {
+        fprintf(stderr, "Apertura del file \"%s\" non riuscita.\n"
+        "Genero parole casuali.\n", filename);
+        // TODO - da implementare
+        exit(EXIT_FAILURE);
+    }
+    // leggo riga per riga con getline()
+    while ((bytesRead = getline(&line, &len, file)) != -1) {
+        printf("%s", line);
+    }
     printf("Matrici caricate.\n");
 }

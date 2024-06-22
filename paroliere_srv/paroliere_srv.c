@@ -30,51 +30,44 @@ int main(int argc, char **argv) {
         switch (opt) {
             case 0:
                 dataFilename = optarg;
-                printf("--matrici %s\n", dataFilename);
                 break;
             case 1:
                 durata = atoi(optarg); // TODO - controllo valore durata!!!
-                printf("--durata OK\n");
                 break;
             case 2:
-                printf("--seed OK\n");
                 break;
             case 3:
                 dizionarioFilename = optarg;
-                printf("--diz OK\n");
                 break;
             case 4:
-                disconnettiMinuti = optarg;
-                printf("--disconnetti-dopo OK\n");
+                disconnettiMinuti = atoi(optarg); // TODO - atoi crea zombie?!?
                 break;
+            // controlla se sono stati digitati parametri inesistenti
             case '?':
             case ':':
             default:
-                printf("qualche errore?\n");
-                break;
+                printUsage(argv[0]);
+                exit(EXIT_FAILURE);
         }
     }
     // controlla che il comando abbia i parametri obbligatori
     if (optind + 2 > argc) {
-        perror("Errore: parametri obbligatori mancanti.\n");
         printUsage(argv[0]);
         exit(EXIT_FAILURE);
     }
     nomeServer = argv[optind];
-    printf("nomeserver: %s\n", nomeServer);
     portaServer = str2portNumber(argv[++optind]);
     // esci se il numero porta non e' valido
     if (portaServer < 0) {
-        perror("Errore: numero porta non valido. " 
+        fprintf(stderr, "Errore: numero porta non valido. " 
         "Inserire valure tra 1025 e 65535.\n");
         printUsage(argv[0]);
         exit(EXIT_FAILURE);
     }
-    printf("porta_server: %d\n", portaServer);
 
     // cattura il segnale SIGINT generato da CTRL-C
     if (signal(SIGINT, sigintHandler) == SIG_ERR) {
-        perror("Errore fatale nello spegnimento del server." 
+        fprintf(stderr, "Errore fatale nello spegnimento del server." 
         "Interruzione immediata.\n");
         exit(EXIT_FAILURE);
     }

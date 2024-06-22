@@ -10,7 +10,7 @@ typedef enum {
 } ServerState;
 
 // dichiara le variabili globali
-//extern char currentWord[10];
-//extern volatile ServerState currentState;
+extern char *currentWord;
+extern volatile ServerState currentState;
 
 #endif // GLOBAL_H

@@ -4,9 +4,9 @@ void printUsage(const char *programName);
 
 int main(int argc, char **argv) {
     const char *nomeServer = argv[1];
-    const int portaServer = atoi(argv[2]);
+    const int portaServer = atoi(argv[2]); // TODO - controllo errori atoi()
     char *dataFilename = NULL; // nome del file dal quale caricare le matrici
-    int durataInMinuti = 3; // durata del gioco in minuti
+    int durata = 3; // durata del gioco in minuti
     int rndSeed = 0; // seed da usare per la generazione numeri pseudocasuali
     char *dizionarioFilename = NULL; // dizionario per controllare parole
 
@@ -30,5 +30,5 @@ int main(int argc, char **argv) {
 }
 
 void printUsage(const char *programName) {
-    printf("Comando: %s nome_server porta_server [--matrici data_filename]\ [--durata durata_in_minuti] [--seed rnd_seed] [--diz dizionario]\ [--disconnetti-dopo tempo in minuti]\n", programName);
+    printf("Comando: %s nome_server porta_server [--matrici data_filename]\ [--durata durata_in_minuti] [--seed rnd_seed] [--diz dizionario]\ [--disconnetti-dopo tempo_in_minuti]\n", programName);
 }

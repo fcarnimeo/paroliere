@@ -5,10 +5,11 @@ void sigintHandler(int sig);
 int str2portNumber(char *portaServer);
 
 int main(int argc, char **argv) {
-    char *dataFilename, *dizionarioFilename, *nomeServer;
-    int durata, opt, optIndex, portaServer, rndSeed;
-
-    // struct usata per contenere i nomi dei parametri per getopt
+    char *dataFilename = NULL;
+    int disconnettiMinuti = -1;
+    char *dizionarioFilename = NULL; // TODO - controllare thread zombie!!!
+    int durata = 3; // minuti (default)
+    // struct usata per contenere i nomi dei parametri per getopt()
     struct option long_options[] = {
         {"matrici", required_argument, NULL, 0},
         {"durata", required_argument, NULL, 1},
@@ -17,33 +18,45 @@ int main(int argc, char **argv) {
         {"disconnetti-dopo", required_argument, NULL, 4},
         {0, 0, 0, 0}
     };
+    char *nomeServer = NULL;
+    int opt = -1;
+    int portaServer = -1;
+    int rndSeed = -1;
+
+    // disabilita i messaggi automatici di errore di getopt()
+    opterr = 0;
     // scansiona i parametri opzionali
-    while ((opt = getopt_long_only(argc, argv, "", long_options,
-    &optIndex)) != -1) {
+    while ((opt = getopt_long_only(argc, argv, "", long_options, NULL)) != -1) {
         switch (opt) {
             case 0:
-                printf("--matrici OK\n");
+                dataFilename = optarg;
+                printf("--matrici %s\n", dataFilename);
                 break;
             case 1:
+                durata = atoi(optarg); // TODO - controllo valore durata!!!
                 printf("--durata OK\n");
                 break;
             case 2:
                 printf("--seed OK\n");
                 break;
             case 3:
+                dizionarioFilename = optarg;
                 printf("--diz OK\n");
                 break;
             case 4:
+                disconnettiMinuti = optarg;
                 printf("--disconnetti-dopo OK\n");
                 break;
+            case '?':
+            case ':':
             default:
-                printf("TODO - qualche errore?\n");
+                printf("qualche errore?\n");
                 break;
         }
     }
-    // controlla che il comando sia stato lanciato correttamente
+    // controlla che il comando abbia i parametri obbligatori
     if (optind + 2 > argc) {
-        perror("Errore: numero parametri insufficiente.\n");
+        perror("Errore: parametri obbligatori mancanti.\n");
         printUsage(argv[0]);
         exit(EXIT_FAILURE);
     }
@@ -76,8 +89,7 @@ int main(int argc, char **argv) {
 
 // stampa la corretta invocazione di `paroliere_srv`
 void printUsage(const char *programName) {
-    printf("Comando: %s nome_server porta_server [--matrici data_filename" "--durata durata_in_minuti] [--seed rnd_seed] [--diz dizionario]" 
-    "[--disconnetti-dopo tempo_in_minuti]\n", programName);
+    printf("Formato comando: %s nome_server porta_server [--matrici " "data_filename --durata durata_in_minuti] [--seed rnd_seed] [--diz " "dizionario] [--disconnetti-dopo tempo_in_minuti]\n", programName);
 }
 
 void sigintHandler(int sig) {

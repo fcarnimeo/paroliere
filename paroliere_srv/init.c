@@ -34,6 +34,6 @@ void initSocket(int port) {
     printf("Server in ascolto sulla porta %d.\n", port);
 }
 
-void loadMatrices(char *filename, ...) {
+void loadMatrices(char *filename) {
     printf("Matrici caricate.\n");
 }

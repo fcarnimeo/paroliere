@@ -2,6 +2,13 @@
 
 void printUsage(const char *programName);
 int str2portNumber(char *portaServer);
+/*
+void sigintHandler(int sig) {
+    printf("Ricevuto segnale %d - SIGINT - (CTRL-C)." 
+    "Inizio spegnimento del server.\n", sig);
+    currentState = EXIT;
+}
+*/
 
 int main(int argc, char **argv) {
     char *dataFilename, *dizionarioFilename, *nomeServer;

@@ -95,6 +95,7 @@ static int processLine(char *line, Matrix *m, int expectedTokens) {
 
     // processa il primo token
     token = strtok(line, delim);
+    printf("Prima linea: %s\nPrimo token: %s\n", line, token);
     // scorri tutti i token
     while (token != NULL) {
         // int c serve come variabile di appoggio per il carattere papabile

@@ -73,7 +73,7 @@ void loadMatrices(char *filename) {
     // alloca memoria per contenere tutte le strutture dati
     Matrix *m_ptr = (Matrix *)malloc(sb.st_size);
     // controlla che la malloc() abbia avuto successo
-    if (matrices == NULL) {
+    if (m_ptr == NULL) {
         fprintf(stderr, "Errore in allocazione di memoria.\n");
         fclose(file);
         exit(EXIT_FAILURE);
@@ -81,7 +81,7 @@ void loadMatrices(char *filename) {
     // leggi riga per riga con getline()
     while ((bytesRead = getline(&line, &len, file)) != -1) {
         // linesCounter tiene traccia del numero di matrice da salvare
-        linesCounter += processLine(line, m_ptr[linesCounter], expectedTokens);
+        linesCounter += processLine(line, &m_ptr[linesCounter], expectedTokens);
     }
     free(line); // libera memoria automaticamente allocata da getline()
     fclose(file);

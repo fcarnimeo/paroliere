@@ -10,6 +10,6 @@ typedef struct {
 void initServer(int port, char *filename);
 void initSocket(int port);
 void loadMatrices(char *filename);
-int processLine(char *line, Matrix *m, int expectedTokens);
+static int processLine(char *line, Matrix *m, int expectedTokens);
 
 #endif // INIT_H

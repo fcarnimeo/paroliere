@@ -99,12 +99,13 @@ static int processLine(char *line, Matrix *m, int expectedTokens) {
     token = strtok(line, delim);
     // scorri tutti i token
     while (token != NULL) {
-        printf("Token: %s\n", token);
         // int c serve come variabile di appoggio per il carattere papabile
         int c = toupper(token[0]);
+        printf("Token: %c\n", c);
         // caso carattere singolo valido
         if (token[1] == '\0' && c >= 'A' && c <= 'Z' || token[2] == '\0' && token[1] == 'U' || token[2] == '\0' && token[1] == 'u') {
-            *(m + tokenCounter++) = c;
+            int *ptr = (int *)m->matrix;
+            *(ptr + tokenCounter++) = c;
         }
         else {
             fprintf(stderr, "File matrici malformato.\n" 

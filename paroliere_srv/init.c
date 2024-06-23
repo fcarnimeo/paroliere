@@ -40,26 +40,48 @@ void loadMatrices(char *filename) {
     size_t len = 0;
     char *line = NULL;
     const int maxTokenLength = 3; // include il caso 'Qu' e lo \0 a fine stringa
+    Matrix **matrices = NULL;
 
-    // apri il file in lettura
-    FILE *file = fopen(filename, "r");
-    // controlla che il file e' aperto correttamente
-    if (file == NULL) {
-        fprintf(stderr, "Apertura del file \"%s\" non riuscita.\n"
-        "Genero parole casuali.\n", filename);
+    // apri il file descriptor
+    int fd = open(filename, O_RDONLY);
+    // controlla errori
+    if (fd == -1) {
+        fprintf(stderr, "Apertura del file matrici non riuscita.\n"
+        "Genero parole casuali.\n");
         // TODO - da implementare
         exit(EXIT_FAILURE);
     }
-    // leggo riga per riga con getline()
+
+    struct stat sb;
+    if (fstat(fd, &sb) == -1) {
+        fprintf(stderr, "Reperimento proprieta' file matrici non riuscito.\n"
+        "Genero parole casuali.\n");
+        // TODO - da implementare
+        exit(EXIT_FAILURE);
+    }
+
+    // apri il file in lettura
+    FILE *file = fdopen(fd, "r");
+    // controlla che il file e' aperto correttamente
+    if (file == NULL) {
+        fprintf(stderr, "Apertura del file matrici non riuscita.\n"
+        "Genero parole casuali.\n");
+        close(fd);
+        // TODO - da implementare
+        exit(EXIT_FAILURE);
+    }
+    // alloca memoria per contenere tutte le strutture dati
+    *matrices = (Matrix *)malloc(sb.st_size);
+    // leggi riga per riga con getline()
     while ((bytesRead = getline(&line, &len, file)) != -1) {
         processLine(line, expectedTokens);
     }
-    free(line); // libero memoria automaticamente allocata da getline()
+    free(line); // libera memoria automaticamente allocata da getline()
     fclose(file);
     printf("\nMatrici caricate.\n");
 }
 
-static void processLine(char *line, int expectedTokens) {
+static void processLine(char *line, int expectedTokens, Matrix **matrices) {
     const char *delim = " \n";
     char *token;
     int tokenCounter = 0; // contatore token processati per linea
@@ -72,7 +94,8 @@ static void processLine(char *line, int expectedTokens) {
         int c = toupper(token[0]);
         // caso carattere singolo valido
         if (token[1] == '\0' && c >= 'A' && c <= 'Z' || token[2] == '\0' && token[1] == 'U' || token[2] == '\0' && token[1] == 'u') {
-            // TODO - inserisci il carattere nella struttura dati
+// TOOO
+            tokenCounter++;
         }
         else {
             fprintf(stderr, "File matrici malformato.\n"

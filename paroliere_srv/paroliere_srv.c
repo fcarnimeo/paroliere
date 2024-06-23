@@ -2,7 +2,7 @@
 
 // variabili globali
 volatile ServerState currentState = INIT;
-char *currentWord = "         ";
+Matrix *currentMatrix = NULL;
 pthread_mutex_t currentState_mtx = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t currentWord_mtx = PTHREAD_MUTEX_INITIALIZER;
 

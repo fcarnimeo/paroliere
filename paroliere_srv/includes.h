@@ -2,6 +2,7 @@
 #define INCLUDES_H
 
 #include <ctype.h>
+#include <fcntl.h>
 #include <getopt.h>
 #include <limits.h>
 #include <pthread.h>
@@ -13,6 +14,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/select.h>
+#include <sys/stat.h>
 #include <sys/socket.h>
 
 #include "init.h"

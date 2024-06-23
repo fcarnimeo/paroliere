@@ -105,8 +105,8 @@ static int processLine(char *line, Matrix *m, int expectedTokens) {
             tokenCounter++;
         }
         else {
-            fprintf(stderr, "File matrici malformato.\n"
-            "Ammessi solo caratteri dalla A alla Z e la combinazione 'QU'.\n", token);
+            fprintf(stderr, "File matrici malformato.\n" 
+            "Ammessi solo caratteri dalla A alla Z e la combinazione 'QU'.\n");
             // TODO - genera invece parole casuali
             exit(EXIT_FAILURE);
         }

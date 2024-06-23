@@ -97,10 +97,9 @@ static int processLine(char *line, Matrix *m, int expectedTokens) {
     printf("Prima linea: %s\n", line);
     // processa il primo token
     token = strtok(line, delim);
-    printf("Primo token: %s\n", token);
     // scorri tutti i token
     while (token != NULL) {
-        printf("Altri token: %s\n", token);
+        printf("Token: %s\n", token);
         // int c serve come variabile di appoggio per il carattere papabile
         int c = toupper(token[0]);
         // caso carattere singolo valido
@@ -116,6 +115,7 @@ static int processLine(char *line, Matrix *m, int expectedTokens) {
         // individua il token successivo
         token = strtok(NULL, delim);
     }
+    // gestisci i valori di ritorno
     switch (tokenCounter) {
         case EXPECTED_TOKENS:
             return 1;
@@ -127,13 +127,4 @@ static int processLine(char *line, Matrix *m, int expectedTokens) {
             // TODO - genera invece parole casuali
             exit(EXIT_FAILURE);
     }
-    // controlla che la linea processata abbia 16 caratteri
-    if (tokenCounter != expectedTokens) {
-        fprintf(stderr, "File matrici malformato.\n"
-        "Non contiene esattamente %d caratteri.\n", expectedTokens);
-        // TODO - genera invece parole casuali
-        exit(EXIT_FAILURE);
-    }
-    // restituisci 1 se ha processato la linea, altrimenti 0
-    return tokenCounter ? 1 : 0;
 }

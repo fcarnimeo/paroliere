@@ -81,7 +81,7 @@ void loadMatrices(char *filename) {
     printf("\nMatrici caricate.\n");
 }
 
-static void processLine(char *line, int expectedTokens, Matrix **matrices) {
+static void processLine(char *line, Matrix **matrices, int expectedTokens) {
     const char *delim = " \n";
     char *token;
     int tokenCounter = 0; // contatore token processati per linea

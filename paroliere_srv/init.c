@@ -39,8 +39,8 @@ void loadMatrices(char *filename) {
     const int expectedTokens = 16; // numero di token per ogni linea (matrice)
     size_t len = 0;
     char *line = NULL;
+    int linesCounter = 0;
     const int maxTokenLength = 3; // include il caso 'Qu' e lo \0 a fine stringa
-    Matrix **matrices = NULL;
 
     // apri il file descriptor
     int fd = open(filename, O_RDONLY);
@@ -71,17 +71,24 @@ void loadMatrices(char *filename) {
         exit(EXIT_FAILURE);
     }
     // alloca memoria per contenere tutte le strutture dati
-    *matrices = (Matrix *)malloc(sb.st_size);
+    Matrix *m_ptr = (Matrix *)malloc(sb.st_size);
+    // controlla che la malloc() abbia avuto successo
+    if (matrices == NULL) {
+        fprintf(stderr, "Errore in allocazione di memoria.\n");
+        fclose(file);
+        exit(EXIT_FAILURE);
+    }
     // leggi riga per riga con getline()
     while ((bytesRead = getline(&line, &len, file)) != -1) {
-        processLine(line, expectedTokens);
+        // linesCounter tiene traccia del numero di matrice da salvare
+        linesCounter += processLine(line, m_ptr[linesCounter], expectedTokens);
     }
     free(line); // libera memoria automaticamente allocata da getline()
     fclose(file);
     printf("\nMatrici caricate.\n");
 }
 
-static void processLine(char *line, Matrix **matrices, int expectedTokens) {
+static int processLine(char *line, Matrix *m, int expectedTokens) {
     const char *delim = " \n";
     char *token;
     int tokenCounter = 0; // contatore token processati per linea
@@ -94,7 +101,6 @@ static void processLine(char *line, Matrix **matrices, int expectedTokens) {
         int c = toupper(token[0]);
         // caso carattere singolo valido
         if (token[1] == '\0' && c >= 'A' && c <= 'Z' || token[2] == '\0' && token[1] == 'U' || token[2] == '\0' && token[1] == 'u') {
-// TOOO
             tokenCounter++;
         }
         else {
@@ -113,4 +119,6 @@ static void processLine(char *line, Matrix **matrices, int expectedTokens) {
         // TODO - genera invece parole casuali
         exit(EXIT_FAILURE);
     }
+    // restituisci 1 se ha processato la linea, altrimenti 0
+    return tokenCounter ? 1 : 0;
 }

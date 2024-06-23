@@ -1,5 +1,7 @@
 #include "includes.h"
 
+#define EXPECTED_TOKENS 16
+
 void initServer(int port, char *filename) {
     printf("Inizio avvio server.\n");
     loadMatrices(filename);
@@ -36,7 +38,6 @@ void initSocket(int port) {
 
 void loadMatrices(char *filename) {
     ssize_t bytesRead;
-    const int expectedTokens = 16; // numero di token per ogni linea (matrice)
     size_t len = 0;
     char *line = NULL;
     int linesCounter = 0;
@@ -81,7 +82,7 @@ void loadMatrices(char *filename) {
     // leggi riga per riga con getline()
     while ((bytesRead = getline(&line, &len, file)) != -1) {
         // linesCounter tiene traccia del numero di matrice da salvare
-        linesCounter += processLine(line, &m_ptr[linesCounter], expectedTokens);
+        linesCounter += processLine(line, &m_ptr[linesCounter], EXPECTED_TOKENS);
     }
     free(line); // libera memoria automaticamente allocata da getline()
     fclose(file);
@@ -93,11 +94,13 @@ static int processLine(char *line, Matrix *m, int expectedTokens) {
     char *token;
     int tokenCounter = 0; // contatore token processati per linea
 
+    printf("Prima linea: %s\n", line);
     // processa il primo token
     token = strtok(line, delim);
-    printf("Prima linea: %s\nPrimo token: %s\n", line, token);
+    printf("Primo token: %s\n", token);
     // scorri tutti i token
     while (token != NULL) {
+        printf("Altri token: %s\n", token);
         // int c serve come variabile di appoggio per il carattere papabile
         int c = toupper(token[0]);
         // caso carattere singolo valido
@@ -112,6 +115,17 @@ static int processLine(char *line, Matrix *m, int expectedTokens) {
         }
         // individua il token successivo
         token = strtok(NULL, delim);
+    }
+    switch (tokenCounter) {
+        case EXPECTED_TOKENS:
+            return 1;
+        case 0:
+            return 0;
+        default:
+            fprintf(stderr, "File matrici malformato.\n"
+            "Non contiene esattamente %d caratteri.\n", expectedTokens);
+            // TODO - genera invece parole casuali
+            exit(EXIT_FAILURE);
     }
     // controlla che la linea processata abbia 16 caratteri
     if (tokenCounter != expectedTokens) {

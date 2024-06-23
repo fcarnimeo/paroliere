@@ -60,21 +60,23 @@ void loadMatrices(char *filename) {
 }
 
 static void processLine(char *line, int expectedTokens) {
-    int c = 0; // contatore token processati per linea
     const char *delim = " \n";
     char *token;
+    int tokenCounter = 0; // contatore token processati per linea
 
     // processa il primo token
     token = strtok(line, delim);
-    // scorri tutti i token papabili
+    // scorri tutti i token
     while (token != NULL) {
-        // controlla che il token sia un carattere ammesso
-        if (strcmp(token, "QU") == 0 || strlen(token) == 1) {
-            printf("Token: %s\n", token);
-            ++c;
-        } else {
+        // int c serve come variabile di appoggio per il carattere papabile
+        int c = toupper(token[0]);
+        // caso carattere singolo valido
+        if (token[1] == '\0' && c >= 'A' && c <= 'Z' || token[2] == '\0' && token[1] == 'U' || token[2] == '\0' && token[1] == 'u') {
+            // TODO - inserisci il carattere nella struttura dati
+        }
+        else {
             fprintf(stderr, "File matrici malformato.\n"
-            "%s non e' un carattere ammesso.\n", token);
+            "Ammessi solo caratteri dalla A alla Z e la combinazione 'QU'.\n", token);
             // TODO - genera invece parole casuali
             exit(EXIT_FAILURE);
         }
@@ -82,7 +84,7 @@ static void processLine(char *line, int expectedTokens) {
         token = strtok(NULL, delim);
     }
     // controlla che la linea processata abbia 16 caratteri
-    if (c != expectedTokens) {
+    if (tokenCounter != expectedTokens) {
         fprintf(stderr, "File matrici malformato.\n"
         "Non contiene esattamente %d caratteri.\n", expectedTokens);
         // TODO - genera invece parole casuali

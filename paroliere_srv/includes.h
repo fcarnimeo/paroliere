@@ -1,6 +1,7 @@
 #ifndef INCLUDES_H
 #define INCLUDES_H
 
+#include <ctype.h>
 #include <getopt.h>
 #include <limits.h>
 #include <pthread.h>

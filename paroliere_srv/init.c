@@ -104,7 +104,7 @@ static int processLine(char *line, Matrix *m, int expectedTokens) {
         int c = toupper(token[0]);
         // caso carattere singolo valido
         if (token[1] == '\0' && c >= 'A' && c <= 'Z' || token[2] == '\0' && token[1] == 'U' || token[2] == '\0' && token[1] == 'u') {
-            tokenCounter++;
+            *(m + tokenCounter++) = c;
         }
         else {
             fprintf(stderr, "File matrici malformato.\n" 

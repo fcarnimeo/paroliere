@@ -35,9 +35,11 @@ void initSocket(int port) {
 }
 
 void loadMatrices(char *filename) {
-    char *line = NULL;
-    size_t len = 0;
     ssize_t bytesRead;
+    const int expectedTokens = 16; // numero di token per ogni linea (matrice)
+    size_t len = 0;
+    char *line = NULL;
+    const int maxTokenLength = 3; // include il caso 'Qu' e lo \0 a fine stringa
 
     // apri il file in lettura
     FILE *file = fopen(filename, "r");
@@ -50,7 +52,13 @@ void loadMatrices(char *filename) {
     }
     // leggo riga per riga con getline()
     while ((bytesRead = getline(&line, &len, file)) != -1) {
-        printf("%s", line);
+        processLine(line);
     }
+    free(line); // libero memoria automaticamente allocata da getline()
+    fclose(file);
     printf("\nMatrici caricate.\n");
+}
+
+static void processLine(char *line) {
+
 }

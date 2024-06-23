@@ -52,13 +52,40 @@ void loadMatrices(char *filename) {
     }
     // leggo riga per riga con getline()
     while ((bytesRead = getline(&line, &len, file)) != -1) {
-        processLine(line);
+        processLine(line, expectedTokens);
     }
     free(line); // libero memoria automaticamente allocata da getline()
     fclose(file);
     printf("\nMatrici caricate.\n");
 }
 
-static void processLine(char *line) {
+static void processLine(char *line, int expectedTokens) {
+    int c = 0; // contatore token processati per linea
+    const char *delim = " \n";
+    char *token;
 
+    // processa il primo token
+    token = strtok(line, delim);
+    // scorri tutti i token papabili
+    while (token != NULL) {
+        // controlla che il token sia un carattere ammesso
+        if (strcmp(token, "QU") == 0 || strlen(token) == 1) {
+            printf("Token: %s\n", token);
+            ++c;
+        } else {
+            fprintf(stderr, "File matrici malformato.\n"
+            "%s non e' un carattere ammesso.\n", token);
+            // TODO - genera invece parole casuali
+            exit(EXIT_FAILURE);
+        }
+        // individua il token successivo
+        token = strtok(NULL, delim);
+    }
+    // controlla che la linea processata abbia 16 caratteri
+    if (c != expectedTokens) {
+        fprintf(stderr, "File matrici malformato.\n"
+        "Non contiene esattamente %d caratteri.\n", expectedTokens);
+        // TODO - genera invece parole casuali
+        exit(EXIT_FAILURE);
+    }
 }

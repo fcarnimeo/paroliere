@@ -52,5 +52,5 @@ void loadMatrices(char *filename) {
     while ((bytesRead = getline(&line, &len, file)) != -1) {
         printf("%s", line);
     }
-    printf("Matrici caricate.\n");
+    printf("\nMatrici caricate.\n");
 }

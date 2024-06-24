@@ -54,3 +54,4 @@ dkms.conf
 # VSCode
 .vscode/
 paroliere_srv/paroliere_srv
+paroliere_srv/*.txt

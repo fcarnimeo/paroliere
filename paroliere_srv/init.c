@@ -104,8 +104,6 @@ static int processLine(char *line, Matrix *m, int expectedTokens) {
             (token[2] == '\0' && toupper(token[1]) == 'U')) {
             m->matrix[row][col++] = c;
             tokenCounter++;
-            //int *ptr = (int *)m->matrix;
-            //*(ptr + tokenCounter++) = c;
         }
         else {
             fprintf(stderr, "File matrici malformato.\n" 

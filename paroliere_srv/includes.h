@@ -19,6 +19,9 @@
 #include <sys/socket.h>
 
 #include "init.h"
+#include "matrix.h"
 #include "serverState.h"
+
+#define MATRIX_SIZE 4
 
 #endif // INCLUDES_H

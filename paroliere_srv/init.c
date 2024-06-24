@@ -41,7 +41,6 @@ void loadMatrices(char *filename) {
     size_t len = 0;
     char *line = NULL;
     int linesCounter = 0;
-    const int maxTokenLength = 3; // include il caso 'Qu' e lo \0 a fine stringa
 
     // apri il file descriptor
     int fd = open(filename, O_RDONLY);
@@ -86,7 +85,7 @@ void loadMatrices(char *filename) {
     printf("\nMatrici caricate.\n");
 }
 
-static int processLine(char *line, Matrix *m, int expectedTokens) {
+int processLine(char *line, Matrix *m, int expectedTokens) {
     const char *delim = " \n";
     char *token;
     int col = 0, row = 0, tokenCounter = 0;
@@ -119,6 +118,9 @@ static int processLine(char *line, Matrix *m, int expectedTokens) {
         }
         printf("\n");
     }
+    // TODO - test
+    char *w = "YQTDUDT";
+    printf("%s: %d\n", w, findWord(m, w));
     // gestisci i valori di ritorno
     switch (tokenCounter) {
         case EXPECTED_TOKENS:

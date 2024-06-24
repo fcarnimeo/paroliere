@@ -2,14 +2,18 @@
 
 #define EXPECTED_TOKENS 16
 
-void initServer(int port, char *filename) {
+void initServer(int nomeServer, int portaServer, char *dataFilename, int durata, unsigned int rndSeed, char *dizionarioFilaname, int disconnettiMinuti) {
     printf("Inizio avvio server.\n");
-    if (filename != NULL)
-        loadMatrices(filename); // carica matrici da file
-    else {
-        
-    }
     //initSocket(port);
+    // carica matrici da file, se presente
+    if (dataFilename != NULL)
+        loadMatrices(dataFilename);
+    // altrimenti inizializza il seed
+    else
+        srand(rndSeed);
+    // carica il dizionario parole valide
+    loadDictionary(dizionarioFilaname);
+    
 }
 
 // TODO - implementare per bene. Dopo che il socket e' partito,

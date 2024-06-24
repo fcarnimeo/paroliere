@@ -1,10 +1,11 @@
 #include "includes.h"
 
 // variabili globali
-volatile ServerState currentState = INIT;
 Matrix *currentMatrix = NULL;
+volatile ServerState currentState = INIT;
 pthread_mutex_t currentState_mtx = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t currentWord_mtx = PTHREAD_MUTEX_INITIALIZER;
+unsigned int rndSeed = (unsigned int)time(NULL);
 
 // prototipi di funzioni
 void printUsage(const char *programName);
@@ -28,7 +29,13 @@ int main(int argc, char **argv) {
     char *nomeServer = NULL;
     int opt = -1;
     int portaServer = -1;
-    int rndSeed = -1;
+
+    // cattura il segnale SIGINT generato da CTRL-C
+    if (signal(SIGINT, sigintHandler) == SIG_ERR) {
+        fprintf(stderr, "Errore fatale nello spegnimento del server." 
+        "Interruzione immediata.\n");
+        exit(EXIT_FAILURE);
+    }
 
     // disabilita i messaggi automatici di errore di getopt()
     opterr = 0;
@@ -42,6 +49,7 @@ int main(int argc, char **argv) {
                 durata = atoi(optarg); // TODO - controllo valore durata!!!
                 break;
             case 2:
+                rndSeed = atoi(optarg); // TODO - controllo atoi()
                 break;
             case 3:
                 dizionarioFilename = optarg;
@@ -72,15 +80,8 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
 
-    // cattura il segnale SIGINT generato da CTRL-C
-    if (signal(SIGINT, sigintHandler) == SIG_ERR) {
-        fprintf(stderr, "Errore fatale nello spegnimento del server." 
-        "Interruzione immediata.\n");
-        exit(EXIT_FAILURE);
-    }
-
-    // TODO - controllare il while (true) e initServer()
-    initServer(portaServer, dataFilename);
+    // inizializza il server
+    initServer(nomeServer, portaServer, dataFilename, durata, rndSeed, dizionarioFilename, disconnettiMinuti);
 }
 
 // stampa la corretta invocazione di `paroliere_srv`

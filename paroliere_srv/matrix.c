@@ -40,3 +40,7 @@ bool foundChr(Matrix *m, char *word, int row, int col, int chrCount, bool visite
 
     return found;
 }
+
+void matrixGenerate(Matrix *m) {
+    
+}

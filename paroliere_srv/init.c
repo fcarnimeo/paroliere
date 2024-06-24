@@ -4,7 +4,11 @@
 
 void initServer(int port, char *filename) {
     printf("Inizio avvio server.\n");
-    loadMatrices(filename);
+    if (filename != NULL)
+        loadMatrices(filename); // carica matrici da file
+    else {
+        
+    }
     //initSocket(port);
 }
 

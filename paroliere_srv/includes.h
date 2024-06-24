@@ -21,7 +21,7 @@
 
 #include "init.h"
 #include "matrix.h"
-#include "serverState.h"
+#include "struct.h"
 
 #define MATRIX_SIZE 4
 

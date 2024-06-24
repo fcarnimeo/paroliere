@@ -61,7 +61,7 @@ void loadMatrices(char *filename) {
     // ottieni proprieta' file
     struct stat sb;
     if (fstat(fd, &sb) == -1) {
-        fprintf(stderr, "Reperimento proprieta' file matrici non riuscito.\n"
+        fprintf(stderr, "Lettura proprieta' file matrici non riuscita.\n"
         "Genero parole casuali.\n");
         // TODO - da implementare
         exit(EXIT_FAILURE);

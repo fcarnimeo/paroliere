@@ -1,5 +1,5 @@
-#ifndef SERVERSTATE_H
-#define SERVERSTATE_H
+#ifndef STRUCT_H
+#define STRUCT_H
 
 typedef enum {
     INIT,
@@ -9,4 +9,4 @@ typedef enum {
     EXIT   
 } ServerState;
 
-#endif // SERVERSTATE_H
+#endif // STRUCT_H

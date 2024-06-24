@@ -79,7 +79,6 @@ void loadMatrices(char *filename) {
     // leggi riga per riga con getline()
     while ((bytesRead = getline(&line, &len, file)) != -1) {
         // linesCounter tiene traccia del numero di matrice da salvare
-        printf("Linea inviata: %s", line);
         linesCounter += processLine(line, &m_ptr[linesCounter], EXPECTED_TOKENS);
     }
     free(line); // libera memoria automaticamente allocata da getline()
@@ -92,13 +91,13 @@ static int processLine(char *line, Matrix *m, int expectedTokens) {
     char *token;
     int col = 0, row = 0, tokenCounter = 0;
 
+    printf("%p\n", &m->matrix[0][0]);
     // processa il primo token
     token = strtok(line, delim);
     // scorri tutti i token
     while (token != NULL) {
         // converti il carattere in lettera maiuscola
         int c = toupper(token[0]);
-        printf("Token: %c\n", c);
         // caso carattere singolo valido
         if ((token[1] == '\0' && c >= 'A' && c <= 'Z') || 
             (token[2] == '\0' && toupper(token[1]) == 'U')) {
@@ -116,7 +115,7 @@ static int processLine(char *line, Matrix *m, int expectedTokens) {
     }
     for (int i = 0; i < MATRIX_SIZE; i++) {
         for (int j = 0; j < MATRIX_SIZE; j++) {
-            printf("%d ", m->matrix[i][j]);
+            printf("%c ", m->matrix[i][j]);
         }
         printf("\n");
     }

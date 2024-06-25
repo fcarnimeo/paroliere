@@ -83,6 +83,7 @@ void loadDictionary(char *filename) {
     size_t wordCount, maxLength;
     countWordsAndMaxLength(file, &wordCount, &maxLength);
 
+/*
     // inizializza il nostro dizionario in memoria
     dictionary = (Dictionary *)malloc(sizeof(Dictionary)); // TODO - free()
     // controlla errori allocazione memoria
@@ -105,12 +106,13 @@ void loadDictionary(char *filename) {
     else
         printf("Allocata memoria per il dizionario.\n");
 
+*/
     size_t index = 0;
     char *line = NULL;
     size_t len = 0;
 
     // inserisci le parole dal file al dizionario in memoria
-    while (getline(&line, &len, file) != -1 && index < dictionary->size) {
+    while (getline(&line, &len, file) != -1 && index < wordCount) {
         char *trimmedLine = trimWhitespace(line);
         if (strlen(trimmedLine) > 0) {
             toUpperCaseAndReplaceQU(trimmedLine);

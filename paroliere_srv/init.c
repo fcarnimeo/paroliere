@@ -45,7 +45,6 @@ void initSocket(int port) {
 }
 
 void loadMatrices(char *filename) {
-    ssize_t bytesRead;
     size_t len = 0;
     char *line = NULL;
     int linesCounter = 0;
@@ -84,7 +83,7 @@ void loadMatrices(char *filename) {
         exit(EXIT_FAILURE);
     }
     // leggi riga per riga con getline()
-    while ((bytesRead = getline(&line, &len, file)) != -1) {
+    while (getline(&line, &len, file) != -1) {
         // linesCounter tiene traccia del numero di matrice da salvare
         linesCounter += processLine(line, &m_ptr[linesCounter], EXPECTED_TOKENS);
     }

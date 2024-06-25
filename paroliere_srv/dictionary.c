@@ -1,41 +1,45 @@
+#include "includes.h"
 
 // Function to convert a string to uppercase and replace "QU" with "Q"
-void toUpperCaseAndReplaceQU(char *str) {
+void toUpperAndReplaceQU(char *str) {
     char *src = str;
     char *dest = str;
 
+    // converte lettera per lettera in maiuscolo
     while (*src) {
         if (toupper((unsigned char)*src) == 'Q' && toupper((unsigned char)*(src + 1)) == 'U') {
             *dest++ = 'Q';
-            src += 2;  // Skip "U" after "Q"
-        } else {
-            *dest++ = toupper((unsigned char)*src++);
+            src += 2;  // salta la 'U' dopo 'Q'
         }
+        else
+            *dest++ = toupper((unsigned char)*src++);
     }
+    // termina la stringa
     *dest = '\0';
 }
 
-// Function to trim leading and trailing whitespace
+// rimuovi i caratteri whitespace prima e dopo la stringa
 char* trimWhitespace(char *str) {
     char *end;
 
-    // Trim leading space
-    while (isspace((unsigned char)*str)) str++;
-
-    if (*str == 0)  // All spaces?
+    // rimuovi il whitespace prima della stringa
+    while (isspace((unsigned char) *str))
+        str++;
+    // se sono tutti spazi, restituisco stringa vuota
+    if (*str == '\0')
         return str;
-
-    // Trim trailing space
+    // rimuovi il whitespace dopo la stringa
     end = str + strlen(str) - 1;
-    while (end > str && isspace((unsigned char)*end)) end--;
-
-    // Write new null terminator
+    // spostati a ritroso col puntatore, finche' trovi un carattere valido
+    while (end > str && isspace((unsigned char) *end))
+        end--;
+    // termina la stringa
     *(end + 1) = '\0';
 
     return str;
 }
 
-// Function to count the number of valid words and find the max word length in the file
+// conta numero parole e lunghezza massima parola all'interno del file
 void countWordsAndMaxLength(FILE *file, size_t *wordCount, size_t *maxLength) {
     *wordCount = 0;
     *maxLength = 0;
@@ -43,36 +47,41 @@ void countWordsAndMaxLength(FILE *file, size_t *wordCount, size_t *maxLength) {
     size_t len = 0;
 
     while (getline(&line, &len, file) != -1) {
+        // prepara la parola
         char *trimmedLine = trimWhitespace(line);
         size_t length = strlen(trimmedLine);
         if (length > 0) {
-            (*wordCount)++;
-            if (length > *maxLength) {
-                *maxLength = length;
-            }
+            (*wordCount)++; // conta parola valida
+            if (length > *maxLength) // trovato nuovo max lunghezza parola
+                *maxLength = length; // aggiorno max
         }
     }
-
-    free(line);
-    fseek(file, 0, SEEK_SET);  // Reset file pointer to the beginning
+    free(line); // libera memoria usata da getline()
+    fseek(file, 0, SEEK_SET);  // riporta il puntatore *file a inizio file
 }
 
-// Function to load the dictionary from a file
+// carica il file dizionario
 void loadDictionary(char *filename, Dictionary *dictionary) {
+    // apri il file in lettura
     FILE *file = fopen(filename, "r");
-    if (!file) {
-        perror("Failed to open file");
+    if (file == NULL) {
+        fprintf(stderr, "Apertura del file dizionario non riuscita.\n");
+        // TODO - da implementare
         exit(EXIT_FAILURE);
     }
 
+    // conta numero parole e lunghezza massima parola nel file dizionario
+    // utile per una allocazione efficiente di memoria
     size_t wordCount, maxLength;
     countWordsAndMaxLength(file, &wordCount, &maxLength);
 
+    // inizializza il nostro dizionario in memoria
     dictionary->size = wordCount;
     dictionary->maxWordLength = maxLength;
-    dictionary->words = malloc(dictionary->size * sizeof(char*));
+    dictionary->words = malloc(dictionary->size * sizeof(char *));
+    // controlla errori allocazione memoria
     if (!dictionary->words) {
-        perror("Failed to allocate memory for words");
+        fprintf(stderr, "Errore in allocazione memoria del dizionario.\n");
         fclose(file);
         exit(EXIT_FAILURE);
     }
@@ -81,73 +90,49 @@ void loadDictionary(char *filename, Dictionary *dictionary) {
     char *line = NULL;
     size_t len = 0;
 
+    // inserisci le parole dal file al dizionario in memoria
     while (getline(&line, &len, file) != -1 && index < dictionary->size) {
         char *trimmedLine = trimWhitespace(line);
-
         if (strlen(trimmedLine) > 0) {
             toUpperCaseAndReplaceQU(trimmedLine);
             dictionary->words[index] = strdup(trimmedLine);
             index++;
         }
     }
-
-    free(line);
+    free(line); // libera memoria usata da getline()
     fclose(file);
 
-    // Sort the words for binary search
+    // ordina le parole
     qsort(dictionary->words, dictionary->size, sizeof(char *), (int (*)(const void *, const void *)) strcmp);
 }
 
-// Function to check if a word is in the dictionary using binary search
+// controlla se una parola e' presente nel dizionario
 bool foundInDictionary(Dictionary *dictionary, const char *word) {
+    // N.B. +1 per il carattere '\0'
     char *temp = malloc((dictionary->maxWordLength + 1) * sizeof(char));
+    // copia nella variabile temporanea di appoggio
     strncpy(temp, word, dictionary->maxWordLength);
+    // aggiusta la stringa
     temp[dictionary->maxWordLength] = '\0';
     toUpperCaseAndReplaceQU(temp);
-    char **result = bsearch(&temp, dictionary->words, dictionary->size, sizeof(char *),
-                            (int (*)(const void *, const void *)) strcmp);
-    free(temp);
+    // effettua binary search, dato che dictionary e' ordinato
+    char **result = bsearch(&temp, dictionary->words, dictionary->size, sizeof(char *), (int (*)(const void *, const void *)) strcmp);
+    free(temp); // libera memoria
     return result != NULL;
 }
 
-// Function to free the memory allocated for the dictionary
+// libera la memoria allocata dinamicamente per il dizionario
 void freeDictionary(Dictionary *dictionary) {
+    // libera prima le parole
     for (size_t i = 0; i < dictionary->size; i++) {
         free(dictionary->words[i]);
     }
+    // libera successivamente l'array delle parole
     free(dictionary->words);
 }
 
-// Example usage
-int main(int argc, char *argv[]) {
-    if (argc != 2) {
-        fprintf(stderr, "Usage: %s <dictionary_file>\n", argv[0]);
-        return EXIT_FAILURE;
-    }
 
-    Dictionary dictionary;
-    loadDictionary(argv[1], &dictionary);
-
-    // Example check
-    char word[256];
-    printf("Enter a word to search in dictionary: ");
-    scanf("%255s", word);
-
-    if (foundInDictionary(&dictionary, word)) {
-        printf("The word '%s' was found in the dictionary.\n", word);
-    } else {
-        printf("The word '%s' was not found in the dictionary.\n", word);
-    }
-
-    // Free the allocated memory
-    freeDictionary(&dictionary);
-
-    return EXIT_SUCCESS;
-}
-
-
-
-
+/*
 void loadDictionary(char *filename) {
     ssize_t bytesRead;
     size_t len = 0;
@@ -192,3 +177,4 @@ void loadDictionary(char *filename) {
     free(line); // libera memoria automaticamente allocata da getline()
     fclose(file);
     printf("\nMatrici caricate.\n");
+*/

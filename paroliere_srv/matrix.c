@@ -1,5 +1,39 @@
 #include "includes.h"
 
+void dfs(Matrix *m, bool visited[MATRIX_SIZE][MATRIX_SIZE], char *word, int row, int col, int length, Dictionary *d, Dictionary *validWords) {//, int *wordCount) {
+    if (length >= MATRIX_SIZE && isWordInDictionary(word, d)) {
+        // se la parola non e' gia' stata trovata
+        if (!isWordInValidWords(word, validWords)) {
+            // aggiungi la parola in coda
+            strcpy(validWords->words[validWords->size], word);
+            // aumenta dimensione dizionario parole valide
+            (validWords->size)++;
+        }
+    }
+
+    // direzioni di movimento consentite
+    int rowDir[] = {0, 1, 0, -1};
+    int colDir[] = {1, 0, -1, 0};
+    // visita le celle adiacenti
+    for (int dir = 0; dir < 4; dir++) {
+        int newRow = row + rowDir[dir];
+        int newCol = col + colDir[dir];
+
+        // controlla se sono dentro la matrice e non ho visitato la cella
+        if (newRow >= 0 && newRow < MATRIX_SIZE && newCol >= 0 && newCol < MATRIX_SIZE && !visited[newRow][newCol]) {
+            // marca la cella come visitata
+            visited[newRow][newCol] = true;
+            // aggiungi carattere alla parola costruita
+            word[length] = m->matrix[newRow][newCol];
+            word[length + 1] = '\0';
+            // chiamata ricorsiva
+            dfs(m, visited, newRow, newCol, word, length + 1, d, validWords);
+            // togli la spunta di visitata
+            visited[newRow][newCol] = false;
+        }
+    }
+}
+
 // il valore di ritorno e' il punteggio della parola
 int findWord(Matrix *m, char *word) {
     // lunghezza minima 4 lettere
@@ -18,6 +52,7 @@ int findWord(Matrix *m, char *word) {
     return 0; // parola non trovata
 }
 
+/*
 // funzione ricorsiva DFS per trovare corrispondenze tra caratteri
 bool foundChr(Matrix *m, char *word, int row, int col, int chrCount, bool visited[MATRIX_SIZE][MATRIX_SIZE]) {
     // caso base: processati correttamente tutti i caratteri
@@ -40,11 +75,28 @@ bool foundChr(Matrix *m, char *word, int row, int col, int chrCount, bool visite
 
     return found;
 }
+*/
 
 void generateRandomMatrix(Matrix *m) {
     for (int i = 0; i < MATRIX_SIZE; i++) {
         for (int j = 0; j < MATRIX_SIZE; j++) {
             m->matrix[i][j] = 'A' + (rand() % 26); // valore tra 'A' e 'Z'
+        }
+    }
+}
+
+// Function to generate valid words from the matrix
+void generateValidWords(Matrix *m, Dictionary *d, Dictionary *validWords) {
+    char word[MAX_WORD_LENGTH + 1];
+    bool visited[MATRIX_SIZE][MATRIX_SIZE] = {false};
+
+    for (int row = 0; row < MATRIX_SIZE; row++) {
+        for (int col = 0; col < MATRIX_SIZE; col++) {
+            visited[row][col] = true;
+            word[0] = matrix[row][col];
+            word[1] = '\0';
+            dfs(matrix, visited, row, col, word, 1, dictionary, dictionarySize, validWords, wordCount);
+            visited[row][col] = false;
         }
     }
 }

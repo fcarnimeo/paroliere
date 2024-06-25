@@ -1,8 +1,5 @@
 #include "includes.h"
 
-// definizione del nodo radice della trie
-TrieNode *trieRoot = NULL;
-
 // funzione per creare un nodo della trie
 TrieNode* createNode() {
     TrieNode *node = (TrieNode *)malloc(sizeof(TrieNode));
@@ -29,7 +26,7 @@ void insertWord(TrieNode *trieRoot, const char *word) {
 bool searchWord(TrieNode *trieRoot, const char *word) {
     TrieNode *current = trieRoot;
     while (*word) {
-        int index = *word - 'a';
+        int index = *word - 'A';
         if (!current->children[index])
             return false;
         current = current->children[index];

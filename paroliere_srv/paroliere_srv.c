@@ -6,6 +6,8 @@ volatile ServerState currentState = INIT;
 pthread_mutex_t currentState_mtx = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t currentWord_mtx = PTHREAD_MUTEX_INITIALIZER;
 Dictionary *dictionary = NULL;
+TrieNode *dizionario = NULL;
+TrieNode *paroleValide = NULL;
 unsigned int rndSeed = 0;
 
 // prototipi di funzioni
@@ -31,6 +33,7 @@ int main(int argc, char **argv) {
     int opt = -1;
     int portaServer = -1;
 
+/*
     // cattura il segnale SIGINT generato da CTRL-C
     if (signal(SIGINT, sigintHandler) == SIG_ERR) {
         fprintf(stderr, "Errore fatale nello spegnimento del server. " 
@@ -42,6 +45,7 @@ int main(int argc, char **argv) {
         fprintf(stderr, "SPENGI!\n");
         exit(EXIT_FAILURE);
     }
+    */
 
     // disabilita i messaggi automatici di errore di getopt()
     opterr = 0;

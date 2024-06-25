@@ -9,9 +9,6 @@ typedef struct TrieNode {
     bool isEndOfWord;
 } TrieNode;
 
-// nodo radice
-extern TrieNode *trieRoot;
-
 // funzioni per le trie
 TrieNode* createNode();
 void insertWord(TrieNode *trieRoot, const char *word);

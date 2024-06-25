@@ -2,11 +2,14 @@
 #define MATRIX_H
 
 #include "struct.h"
+#include "trie.h"
 
-void dfs(Matrix *m, bool visited[MATRIX_SIZE][MATRIX_SIZE], char *word, int row, int col, int charCount, Dictionary *d, Dictionary *validWords); //, int *wordCount) {
+void dfs(Matrix *m, bool visited[MATRIX_SIZE][MATRIX_SIZE], char *word, int row, int col, int charCount, TrieNode *dizionario, TrieNode *paroleValide);
 //int findWord(Matrix *m, char *word);
 //bool foundChr(Matrix *m, char *word, int row, int col, int chrCount, bool visited[MATRIX_SIZE][MATRIX_SIZE]);
 void generateRandomMatrix(Matrix *m);
-void generateValidWords(Matrix *m, Dictionary *d, Dictionary *validWords);
+void generateValidWords(Matrix *m, TrieNode *dizionario, TrieNode *paroleValide);
+void loadMatrices(char *filename);
+int processLine(char *line, Matrix *m, int expectedTokens);
 
 #endif // MATRIX_H

@@ -25,6 +25,7 @@
 #include "struct.h"
 #include "trie.h"
 
+#define EXPECTED_TOKENS 16
 #define MATRIX_SIZE 4
 
 extern Matrix *currentMatrix;
@@ -32,6 +33,8 @@ extern volatile ServerState currentState;
 extern pthread_mutex_t currentState_mtx;
 extern pthread_mutex_t currentWord_mtx;
 extern Dictionary *dictionary;
+extern TrieNode *dizionario;
+extern TrieNode *paroleValide;
 extern unsigned int rndSeed;
 
 #endif // INCLUDES_H

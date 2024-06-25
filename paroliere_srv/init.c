@@ -1,9 +1,9 @@
 #include "includes.h"
 
-#define EXPECTED_TOKENS 16
-
 void initServer(char *nomeServer, int portaServer, char *dataFilename, int durata, unsigned int rndSeed, char *dizionarioFilename, int disconnettiMinuti) {
     printf("Inizio avvio server.\n");
+    TrieNode *dizionario = createNode();
+    TrieNode *paroleValide = createNode();
     //initSocket(port);
     // carica matrici da file, se presente
     if (dataFilename != NULL)
@@ -12,18 +12,14 @@ void initServer(char *nomeServer, int portaServer, char *dataFilename, int durat
     else
         rndSeed = (unsigned int)time(NULL);
         srand(rndSeed);
+        // TODO genera matrici casuali
     // carica il dizionario parole valide
     if (dizionarioFilename != NULL)
         loadDictionary(dizionarioFilename);
     // altrimenti carica dizionario di default
     else; // TODO
-    // TODO - test
-    Dictionary validWords;
     printf("Inizio generazione parole valide.\n");
-    generateValidWords(currentMatrix, dictionary, &validWords);
-    for (size_t i = 0; i < validWords.size; i++) {
-        printf("Parola valida: %s\n", validWords.words[i]);
-    }
+    generateValidWords(currentMatrix, dizionario, paroleValide);
 }
 
 // TODO - implementare per bene. Dopo che il socket e' partito,
@@ -52,102 +48,4 @@ void initSocket(int port) {
         exit(EXIT_FAILURE);
     }
     printf("Server in ascolto sulla porta %d.\n", port);
-}
-
-void loadMatrices(char *filename) {
-    size_t len = 0;
-    char *line = NULL;
-    int linesCounter = 0;
-
-    // apri il file descriptor
-    int fd = open(filename, O_RDONLY);
-    if (fd == -1) {
-        fprintf(stderr, "Apertura del file matrici non riuscita.\n"
-        "Genero parole casuali.\n");
-        // TODO - da implementare
-        exit(EXIT_FAILURE);
-    }
-    // ottieni proprieta' file
-    struct stat sb;
-    if (fstat(fd, &sb) == -1) {
-        fprintf(stderr, "Lettura proprieta' file matrici non riuscita.\n"
-        "Genero parole casuali.\n");
-        // TODO - da implementare
-        exit(EXIT_FAILURE);
-    }
-    // apri il file in lettura
-    FILE *file = fdopen(fd, "r");
-    if (file == NULL) {
-        fprintf(stderr, "Apertura del file matrici non riuscita.\n"
-        "Genero parole casuali.\n");
-        close(fd);
-        // TODO - da implementare
-        exit(EXIT_FAILURE);
-    }
-    // alloca memoria per contenere tutte le strutture dati
-    currentMatrix = (Matrix *)malloc(sb.st_size * sizeof(int));
-    // controlla che la malloc() abbia avuto successo
-    if (currentMatrix == NULL) {
-        fprintf(stderr, "Errore in allocazione di memoria.\n");
-        fclose(file);
-        exit(EXIT_FAILURE);
-    }
-    // leggi riga per riga con getline()
-    while (getline(&line, &len, file) != -1) {
-        // linesCounter tiene traccia del numero di matrice da salvare
-        linesCounter += processLine(line, &currentMatrix[linesCounter], EXPECTED_TOKENS);
-    }
-    free(line); // libera memoria automaticamente allocata da getline()
-    fclose(file);
-    printf("\nMatrici caricate.\n");
-}
-
-int processLine(char *line, Matrix *m, int expectedTokens) {
-    const char *delim = " \n";
-    char *token;
-    int col = 0, row = 0, tokenCounter = 0;
-
-    printf("%p\n", &m->matrix[0][0]);
-    // processa il primo token
-    token = strtok(line, delim);
-    // scorri tutti i token
-    while (token != NULL) {
-        // converti il carattere in lettera maiuscola
-        int c = toupper(token[0]);
-        // caso carattere singolo valido
-        if ((token[1] == '\0' && c >= 'A' && c <= 'Z') || 
-            (token[2] == '\0' && toupper(token[1]) == 'U')) {
-            m->matrix[row][col++] = c;
-            tokenCounter++;
-        }
-        else {
-            fprintf(stderr, "File matrici malformato.\n" 
-            "Ammessi solo caratteri dalla A alla Z e la combinazione 'QU'.\n");
-            // TODO - genera invece parole casuali
-            exit(EXIT_FAILURE);
-        }
-        // individua il token successivo
-        token = strtok(NULL, delim);
-    }
-    for (int i = 0; i < MATRIX_SIZE; i++) {
-        for (int j = 0; j < MATRIX_SIZE; j++) {
-            printf("%c ", m->matrix[i][j]);
-        }
-        printf("\n");
-    }
-    // TODO - test
-    //char *w = "YQTDUDT";
-    //printf("%s: %d\n", w, findWord(m, w));
-    // gestisci i valori di ritorno
-    switch (tokenCounter) {
-        case EXPECTED_TOKENS:
-            return 1;
-        case 0:
-            return 0;
-        default:
-            fprintf(stderr, "File matrici malformato.\n"
-            "Non contiene esattamente %d caratteri.\n", expectedTokens);
-            // TODO - genera invece parole casuali
-            exit(EXIT_FAILURE);
-    }
 }

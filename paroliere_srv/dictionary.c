@@ -83,9 +83,12 @@ void loadDictionary(char *filename) {
     size_t wordCount, maxLength;
     countWordsAndMaxLength(file, &wordCount, &maxLength);
 
-/*
     // inizializza il nostro dizionario in memoria
-    dictionary = (Dictionary *)malloc(sizeof(Dictionary)); // TODO - free()
+    // dictionary = (Dictionary *)malloc(sizeof(Dictionary)); // TODO - free()
+
+    // inizializza la trie
+    TrieNode *dizionario = createNode();
+/*
     // controlla errori allocazione memoria
     if (dictionary == NULL) {
         fprintf(stderr, "Errore in allocazione memoria del dizionario.\n");
@@ -116,7 +119,7 @@ void loadDictionary(char *filename) {
         char *trimmedLine = trimWhitespace(line);
         if (strlen(trimmedLine) > 0) {
             toUpperCaseAndReplaceQU(trimmedLine);
-            insertWord(trieRoot, trimmedLine); // inserisci parola nella trie
+            insertWord(dizionario, trimmedLine); // inserisci parola nella trie
             //dictionary->words[index] = strdup(trimmedLine);
             index++;
         }

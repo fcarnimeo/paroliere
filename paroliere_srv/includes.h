@@ -23,6 +23,7 @@
 #include "init.h"
 #include "matrix.h"
 #include "struct.h"
+#include "trie.h"
 
 #define MATRIX_SIZE 4
 

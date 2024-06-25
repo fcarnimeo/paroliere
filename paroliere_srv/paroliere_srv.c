@@ -33,8 +33,13 @@ int main(int argc, char **argv) {
 
     // cattura il segnale SIGINT generato da CTRL-C
     if (signal(SIGINT, sigintHandler) == SIG_ERR) {
-        fprintf(stderr, "Errore fatale nello spegnimento del server." 
+        fprintf(stderr, "Errore fatale nello spegnimento del server. " 
         "Interruzione immediata.\n");
+        exit(EXIT_FAILURE);
+    }
+    // TODO - implementare routing di spegnimento
+    else {
+        fprintf(stderr, "SPENGI!\n");
         exit(EXIT_FAILURE);
     }
 

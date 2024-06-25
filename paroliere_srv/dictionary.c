@@ -114,7 +114,8 @@ void loadDictionary(char *filename) {
         char *trimmedLine = trimWhitespace(line);
         if (strlen(trimmedLine) > 0) {
             toUpperCaseAndReplaceQU(trimmedLine);
-            dictionary->words[index] = strdup(trimmedLine);
+            insertWord(trieRoot, trimmedLine); // inserisci parola nella trie
+            //dictionary->words[index] = strdup(trimmedLine);
             index++;
         }
     }

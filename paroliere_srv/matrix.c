@@ -81,11 +81,9 @@ bool foundChr(Matrix *m, char *word, int row, int col, int chrCount, bool visite
 */
 
 void generateRandomMatrix(Matrix *m) {
-    for (int i = 0; i < MATRIX_SIZE; i++) {
-        for (int j = 0; j < MATRIX_SIZE; j++) {
+    for (int i = 0; i < MATRIX_SIZE; i++)
+        for (int j = 0; j < MATRIX_SIZE; j++)
             m->matrix[i][j] = 'A' + (rand() % 26); // valore tra 'A' e 'Z'
-        }
-    }
 }
 
 // funzione ausiliaria: genera parole valide dalla matrice

@@ -120,9 +120,6 @@ void loadDictionary(char *filename) {
     }
     free(line); // libera memoria usata da getline()
     fclose(file);
-
-    // ordina le parole
-    qsort(dictionary->words, dictionary->size, sizeof(char *), (int (*)(const void *, const void *)) strcmp);
 }
 
 // controlla se una parola e' presente nel dizionario

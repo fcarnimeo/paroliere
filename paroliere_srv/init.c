@@ -17,6 +17,13 @@ void initServer(char *nomeServer, int portaServer, char *dataFilename, int durat
         loadDictionary(dizionarioFilename);
     // altrimenti carica dizionario di default
     else; // TODO
+    // TODO - test
+    Dictionary validWords;
+    printf("Inizio generazione parole valide.\n");
+    generateValidWords(currentMatrix, dictionary, &validWords);
+    for (size_t i = 0; i < validWords.size; i++) {
+        printf("Parola valida: %s\n", validWords.words[i]);
+    }
 }
 
 // TODO - implementare per bene. Dopo che il socket e' partito,

@@ -5,7 +5,8 @@ Matrix *currentMatrix = NULL;
 volatile ServerState currentState = INIT;
 pthread_mutex_t currentState_mtx = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t currentWord_mtx = PTHREAD_MUTEX_INITIALIZER;
-unsigned int rndSeed = (unsigned int)time(NULL);
+Dictionary *dictionary = NULL;
+unsigned int rndSeed = 0;
 
 // prototipi di funzioni
 void printUsage(const char *programName);

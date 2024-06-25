@@ -1,6 +1,8 @@
 #ifndef STRUCT_H
 #define STRUCT_H
 
+#define MATRIX_SIZE 4
+
 typedef struct {
     char **words;
     size_t size;

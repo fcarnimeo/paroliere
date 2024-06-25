@@ -2,17 +2,18 @@
 
 #define EXPECTED_TOKENS 16
 
-void initServer(int nomeServer, int portaServer, char *dataFilename, int durata, unsigned int rndSeed, char *dizionarioFilaname, int disconnettiMinuti) {
+void initServer(char *nomeServer, int portaServer, char *dataFilename, int durata, unsigned int rndSeed, char *dizionarioFilaname, int disconnettiMinuti) {
     printf("Inizio avvio server.\n");
     //initSocket(port);
     // carica matrici da file, se presente
     if (dataFilename != NULL)
-        loadMatrices(dataFilename);
+        loadMatrices(dataFilename, currentMatrix);
     // altrimenti inizializza il seed
     else
+        rndSeed = (unsigned int)time(NULL);
         srand(rndSeed);
     // carica il dizionario parole valide
-    loadDictionary(dizionarioFilaname);
+    loadDictionary(dizionarioFilaname, dictionary);
     
 }
 
@@ -44,7 +45,7 @@ void initSocket(int port) {
     printf("Server in ascolto sulla porta %d.\n", port);
 }
 
-void loadMatrices(char *filename) {
+void loadMatrices(char *filename, Matrix *m) {
     size_t len = 0;
     char *line = NULL;
     int linesCounter = 0;
@@ -75,9 +76,9 @@ void loadMatrices(char *filename) {
         exit(EXIT_FAILURE);
     }
     // alloca memoria per contenere tutte le strutture dati
-    Matrix *m_ptr = (Matrix *)malloc(sb.st_size * sizeof(int));
+    m = (Matrix *)malloc(sb.st_size * sizeof(int));
     // controlla che la malloc() abbia avuto successo
-    if (m_ptr == NULL) {
+    if (m == NULL) {
         fprintf(stderr, "Errore in allocazione di memoria.\n");
         fclose(file);
         exit(EXIT_FAILURE);
@@ -85,7 +86,7 @@ void loadMatrices(char *filename) {
     // leggi riga per riga con getline()
     while (getline(&line, &len, file) != -1) {
         // linesCounter tiene traccia del numero di matrice da salvare
-        linesCounter += processLine(line, &m_ptr[linesCounter], EXPECTED_TOKENS);
+        linesCounter += processLine(line, &m[linesCounter], EXPECTED_TOKENS);
     }
     free(line); // libera memoria automaticamente allocata da getline()
     fclose(file);
@@ -126,8 +127,8 @@ int processLine(char *line, Matrix *m, int expectedTokens) {
         printf("\n");
     }
     // TODO - test
-    char *w = "YQTDUDT";
-    printf("%s: %d\n", w, findWord(m, w));
+    //char *w = "YQTDUDT";
+    //printf("%s: %d\n", w, findWord(m, w));
     // gestisci i valori di ritorno
     switch (tokenCounter) {
         case EXPECTED_TOKENS:

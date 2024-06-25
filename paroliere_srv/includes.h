@@ -19,10 +19,18 @@
 #include <sys/stat.h>
 #include <sys/socket.h>
 
+#include "dictionary.h"
 #include "init.h"
 #include "matrix.h"
 #include "struct.h"
 
 #define MATRIX_SIZE 4
+
+extern Matrix *currentMatrix;
+extern volatile ServerState currentState;
+extern pthread_mutex_t currentState_mtx;
+extern pthread_mutex_t currentWord_mtx;
+extern Dictionary *dictionary;
+extern unsigned int rndSeed;
 
 #endif // INCLUDES_H

@@ -1,9 +1,10 @@
 #include "includes.h"
 
+// ricerca dfs nella matrice
 void dfs(Matrix *m, bool visited[MATRIX_SIZE][MATRIX_SIZE], char *word, int row, int col, int length, Dictionary *d, Dictionary *validWords) {//, int *wordCount) {
     if (length >= MATRIX_SIZE && isWordInDictionary(word, d)) {
         // se la parola non e' gia' stata trovata
-        if (!isWordInValidWords(word, validWords)) {
+        if (!isWordInDictionary(word, validWords)) {
             // aggiungi la parola in coda
             strcpy(validWords->words[validWords->size], word);
             // aumenta dimensione dizionario parole valide
@@ -27,13 +28,14 @@ void dfs(Matrix *m, bool visited[MATRIX_SIZE][MATRIX_SIZE], char *word, int row,
             word[length] = m->matrix[newRow][newCol];
             word[length + 1] = '\0';
             // chiamata ricorsiva
-            dfs(m, visited, newRow, newCol, word, length + 1, d, validWords);
+            dfs(m, visited, word, newRow, newCol, length + 1, d, validWords);
             // togli la spunta di visitata
             visited[newRow][newCol] = false;
         }
     }
 }
 
+/*
 // il valore di ritorno e' il punteggio della parola
 int findWord(Matrix *m, char *word) {
     // lunghezza minima 4 lettere
@@ -51,6 +53,7 @@ int findWord(Matrix *m, char *word) {
     }
     return 0; // parola non trovata
 }
+*/
 
 /*
 // funzione ricorsiva DFS per trovare corrispondenze tra caratteri
@@ -85,17 +88,18 @@ void generateRandomMatrix(Matrix *m) {
     }
 }
 
-// Function to generate valid words from the matrix
+// funzione ausiliaria: genera parole valide dalla matrice
 void generateValidWords(Matrix *m, Dictionary *d, Dictionary *validWords) {
-    char word[MAX_WORD_LENGTH + 1];
+    char word[MATRIX_SIZE + 1];
     bool visited[MATRIX_SIZE][MATRIX_SIZE] = {false};
 
+    // avvia la generazione a partire da ogni cella
     for (int row = 0; row < MATRIX_SIZE; row++) {
         for (int col = 0; col < MATRIX_SIZE; col++) {
             visited[row][col] = true;
-            word[0] = matrix[row][col];
+            word[0] = m->matrix[row][col];
             word[1] = '\0';
-            dfs(matrix, visited, row, col, word, 1, dictionary, dictionarySize, validWords, wordCount);
+            dfs(m, visited, word, row, col, 1, d, validWords);
             visited[row][col] = false;
         }
     }

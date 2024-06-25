@@ -1,11 +1,19 @@
 #include "includes.h"
 
-// Function to convert a string to uppercase and replace "QU" with "Q"
-void toUpperAndReplaceQU(char *str) {
+// controlla se una parola e' gia' presente nel dizionario
+bool isWordInDictionary(const char *word, Dictionary *d) {
+    for (int i = 0; i < d->size; i++)
+        if (strcmp(word, d->words[i]) == 0)
+            return true;
+    return false;
+}
+
+// converti una stringa in maiuscolo e codifica 'QU come 'Q'
+void toUpperCaseAndReplaceQU(char *str) {
     char *src = str;
     char *dest = str;
 
-    // converte lettera per lettera in maiuscolo
+    // converti lettera per lettera in maiuscolo
     while (*src) {
         if (toupper((unsigned char)*src) == 'Q' && toupper((unsigned char)*(src + 1)) == 'U') {
             *dest++ = 'Q';
@@ -76,9 +84,10 @@ void loadDictionary(char *filename, Dictionary *dictionary) {
     countWordsAndMaxLength(file, &wordCount, &maxLength);
 
     // inizializza il nostro dizionario in memoria
+    dictionary = (Dictionary *)malloc(sizeof(Dictionary)); // TODO - free()
     dictionary->size = wordCount;
     dictionary->maxWordLength = maxLength;
-    dictionary->words = malloc(dictionary->size * sizeof(char *));
+    dictionary->words = (char **)malloc(dictionary->size * sizeof(char *));
     // controlla errori allocazione memoria
     if (!dictionary->words) {
         fprintf(stderr, "Errore in allocazione memoria del dizionario.\n");

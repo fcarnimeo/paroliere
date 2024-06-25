@@ -2,23 +2,21 @@
 
 #define EXPECTED_TOKENS 16
 
-void initServer(char *nomeServer, int portaServer, char *dataFilename, int durata, unsigned int rndSeed, char *dizionarioFilaname, int disconnettiMinuti) {
+void initServer(char *nomeServer, int portaServer, char *dataFilename, int durata, unsigned int rndSeed, char *dizionarioFilename, int disconnettiMinuti) {
     printf("Inizio avvio server.\n");
     //initSocket(port);
     // carica matrici da file, se presente
     if (dataFilename != NULL)
-        loadMatrices(dataFilename, currentMatrix);
+        loadMatrices(dataFilename);
     // altrimenti inizializza il seed
     else
         rndSeed = (unsigned int)time(NULL);
         srand(rndSeed);
     // carica il dizionario parole valide
-    loadDictionary(dizionarioFilaname, dictionary);
-    // TODO - debug
-    for (size_t i = 0; i < dictionary->size; i++) {
-        printf("%s\n", dictionary->words[i]);
-    }
-    
+    if (dizionarioFilename != NULL)
+        loadDictionary(dizionarioFilename);
+    // altrimenti carica dizionario di default
+    else; // TODO
 }
 
 // TODO - implementare per bene. Dopo che il socket e' partito,
@@ -49,7 +47,7 @@ void initSocket(int port) {
     printf("Server in ascolto sulla porta %d.\n", port);
 }
 
-void loadMatrices(char *filename, Matrix *m) {
+void loadMatrices(char *filename) {
     size_t len = 0;
     char *line = NULL;
     int linesCounter = 0;
@@ -80,9 +78,9 @@ void loadMatrices(char *filename, Matrix *m) {
         exit(EXIT_FAILURE);
     }
     // alloca memoria per contenere tutte le strutture dati
-    m = (Matrix *)malloc(sb.st_size * sizeof(int));
+    currentMatrix = (Matrix *)malloc(sb.st_size * sizeof(int));
     // controlla che la malloc() abbia avuto successo
-    if (m == NULL) {
+    if (currentMatrix == NULL) {
         fprintf(stderr, "Errore in allocazione di memoria.\n");
         fclose(file);
         exit(EXIT_FAILURE);
@@ -90,7 +88,7 @@ void loadMatrices(char *filename, Matrix *m) {
     // leggi riga per riga con getline()
     while (getline(&line, &len, file) != -1) {
         // linesCounter tiene traccia del numero di matrice da salvare
-        linesCounter += processLine(line, &m[linesCounter], EXPECTED_TOKENS);
+        linesCounter += processLine(line, &currentMatrix[linesCounter], EXPECTED_TOKENS);
     }
     free(line); // libera memoria automaticamente allocata da getline()
     fclose(file);

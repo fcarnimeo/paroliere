@@ -14,6 +14,10 @@ void initServer(char *nomeServer, int portaServer, char *dataFilename, int durat
         srand(rndSeed);
     // carica il dizionario parole valide
     loadDictionary(dizionarioFilaname, dictionary);
+    // TODO - debug
+    for (size_t i = 0; i < dictionary->size; i++) {
+        printf("%s\n", dictionary->words[i]);
+    }
     
 }
 

@@ -85,6 +85,14 @@ void loadDictionary(char *filename, Dictionary *dictionary) {
 
     // inizializza il nostro dizionario in memoria
     dictionary = (Dictionary *)malloc(sizeof(Dictionary)); // TODO - free()
+    // controlla errori allocazione memoria
+    if (dictionary == NULL) {
+        fprintf(stderr, "Errore in allocazione memoria del dizionario.\n");
+        fclose(file);
+        exit(EXIT_FAILURE);
+    }
+    printf("Allocata memoria per il dizionario.\n");
+    printf("wordCount: %ld\nmaxLength: %ld\n", wordCount, maxLength);
     dictionary->size = wordCount;
     dictionary->maxWordLength = maxLength;
     dictionary->words = (char **)malloc(dictionary->size * sizeof(char *));
@@ -94,6 +102,7 @@ void loadDictionary(char *filename, Dictionary *dictionary) {
         fclose(file);
         exit(EXIT_FAILURE);
     }
+    printf("Allocata memoria per il dizionario.\n");
 
     size_t index = 0;
     char *line = NULL;

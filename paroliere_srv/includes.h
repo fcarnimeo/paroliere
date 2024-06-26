@@ -43,6 +43,7 @@ extern TrieNode *paroleValide;
 extern unsigned int rndSeed;
 extern volatile ServerState serverState;
 extern pthread_t serverStateManager_thread;
+extern volatile sig_atomic_t shuttingDown;
 extern pthread_cond_t state_cond;
 extern pthread_mutex_t state_mutex;
 

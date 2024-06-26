@@ -11,6 +11,7 @@ TrieNode *paroleValide = NULL;
 unsigned int rndSeed = 0;
 volatile ServerState serverState;
 pthread_t serverStateManager_thread;
+volatile sig_atomic_t shuttingDown;
 pthread_cond_t state_cond = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t state_mutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -20,6 +21,7 @@ void sigintHandler(int sig);
 int str2portNumber(char *portaServer);
 
 int main(int argc, char **argv) {
+    shuttingDown = 0;
     serverState = INIT; // server appena avviato
     char *dataFilename = NULL;
     int disconnettiMinuti = -1;
@@ -88,7 +90,8 @@ int main(int argc, char **argv) {
     initServer(nomeServer, portaServer, dataFilename, durata, rndSeed, dizionarioFilename, disconnettiMinuti);
 
     // spegni il server se arriva CTRL-C
-    while (serverState != SHUTDOWN); // attendi finche' non arriva lo stato SHUTDOWN
+    //while (serverState != SHUTDOWN); // attendi finche' non arriva lo stato SHUTDOWN
+    while (!shuttingDown);
     // avvia lo shutdown
     shutdownServer();
 

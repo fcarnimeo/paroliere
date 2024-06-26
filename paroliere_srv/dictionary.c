@@ -64,6 +64,8 @@ void countWordsAndMaxLength(FILE *file, size_t *wordCount, size_t *maxLength) {
                 *maxLength = length; // aggiorno max
         }
     }
+    ++(*maxLength); // aggiungo lo spazio per '\0'
+
     free(line); // libera memoria usata da getline()
     fseek(file, 0, SEEK_SET);  // riporta il puntatore *file a inizio file
 }

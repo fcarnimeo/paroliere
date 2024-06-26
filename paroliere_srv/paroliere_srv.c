@@ -11,6 +11,7 @@ pthread_mutex_t matrix_mutex = PTHREAD_MUTEX_INITIALIZER;
 TrieNode *paroleValide = NULL;
 unsigned int rndSeed = 0;
 ServerState serverState;
+pthread_t serverStateManager_thread;
 pthread_cond_t state_cond = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t state_mutex = PTHREAD_MUTEX_INITIALIZER;
 

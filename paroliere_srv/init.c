@@ -10,9 +10,8 @@ void initServer(char *nomeServer, int portaServer, char *dataFilename, int durat
         loadMatrices(dataFilename);
     // altrimenti inizializza il seed
     else {
-        rndSeed = (unsigned int) time(NULL);
+        rndSeed = (unsigned int)time(NULL);
         srand(rndSeed);
-        // TODO genera matrici casuali
     }
     // carica il dizionario parole valide
     if (dizionarioFilename != NULL)
@@ -22,6 +21,9 @@ void initServer(char *nomeServer, int portaServer, char *dataFilename, int durat
     printf("Inizio generazione parole valide.\n");
     generateValidWords(currentMatrix, dizionario, paroleValide);
     printf("Parole valide caricate.\n");
+
+    // avvia il thread che gestisce lo stato del server
+    pthread_create(&serverStateManager_thread, NULL, serverStateManager(), NULL);
 }
 
 // TODO - implementare per bene. Dopo che il socket e' partito,

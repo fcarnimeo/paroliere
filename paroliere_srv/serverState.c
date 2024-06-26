@@ -1,6 +1,6 @@
 #include "includes.h"
 
-void *serverStateManager(void *arg) {
+void *serverStateManager(void) {
     while (true) {
         // entra nello stato PLAYING
         pthread_mutex_lock(&state_mutex);
@@ -13,7 +13,8 @@ void *serverStateManager(void *arg) {
         // entra nello stato PAUSED
         pthread_mutex_lock(&state_mutex);
         serverState = PAUSED;
-        printf("Stato server: PLAYING\n");
+        generateRandomMatrix(currentMatrix);
+        printf("Stato server: PAUSED\n");
         pthread_cond_broadcast(&state_cond);
         pthread_mutex_unlock(&state_mutex);
         sleep(60); // rimani in attesa che PAUSED finisca

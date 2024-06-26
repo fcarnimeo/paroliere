@@ -34,5 +34,8 @@ clean:
 # Rebuild everything
 rebuild: clean all
 
+uninstall:
+	rm -f $(TARGET)
+
 # Phony targets
-.PHONY: all clean rebuild
+.PHONY: all clean rebuild uninstall

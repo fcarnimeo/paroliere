@@ -4,11 +4,11 @@
 #define  _POSIX_C_SOURCE 200809L
 
 #include <ctype.h>
+#include <errno.h>
 #include <fcntl.h>
 #include <getopt.h>
 #include <limits.h>
 #include <pthread.h>
-#include "serverState.h"
 #include <signal.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -25,6 +25,8 @@
 #include "dictionary.h"
 #include "init.h"
 #include "matrix.h"
+#include "serverState.h"
+#include "shutdown.h"
 #include "struct.h"
 #include "trie.h"
 
@@ -32,7 +34,6 @@
 #define MATRIX_SIZE 4
 
 extern Matrix *currentMatrix;
-extern volatile ServerState currentState;
 extern Dictionary *dictionary;
 extern TrieNode *dizionario;
 extern int durata;
@@ -40,7 +41,7 @@ extern pthread_cond_t matrix_cond;
 extern pthread_mutex_t matrix_mutex;
 extern TrieNode *paroleValide;
 extern unsigned int rndSeed;
-extern ServerState serverState;
+extern volatile ServerState serverState;
 extern pthread_t serverStateManager_thread;
 extern pthread_cond_t state_cond;
 extern pthread_mutex_t state_mutex;

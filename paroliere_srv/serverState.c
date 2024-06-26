@@ -4,6 +4,11 @@ void *serverStateManager(void) {
     while (true) {
         // entra nello stato PLAYING
         pthread_mutex_lock(&state_mutex);
+        // controlla se e' arrivato il segnale di spegnimento
+        if (serverState == SHUTDOWN) {
+            pthread_mutex_unlock(&state_mutex);
+            break; // esci dal ciclo, ergo dal thread
+        }
         serverState = PLAYING;
         printf("Stato server: PLAYING\n");
         pthread_cond_broadcast(&state_cond);
@@ -12,6 +17,11 @@ void *serverStateManager(void) {
 
         // entra nello stato PAUSED
         pthread_mutex_lock(&state_mutex);
+        // controlla se e' arrivato il segnale di spegnimento
+        if (serverState == SHUTDOWN) {
+            pthread_mutex_unlock(&state_mutex);
+            break; // esci dal ciclo, ergo dal thread
+        }
         serverState = PAUSED;
         generateRandomMatrix(currentMatrix);
         printf("Stato server: PAUSED\n");

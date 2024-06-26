@@ -19,7 +19,7 @@ typedef enum {
     PLAYING,
     PAUSED,
     ERROR,
-    EXIT   
+    SHUTDOWN
 } ServerState;
 
 typedef struct TrieNode {

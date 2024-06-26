@@ -2,7 +2,6 @@
 
 // variabili globali
 Matrix *currentMatrix = NULL;
-volatile ServerState currentState = INIT;
 Dictionary *dictionary = NULL;
 TrieNode *dizionario = NULL;
 int durata;
@@ -10,7 +9,7 @@ pthread_cond_t matrix_cond = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t matrix_mutex = PTHREAD_MUTEX_INITIALIZER;
 TrieNode *paroleValide = NULL;
 unsigned int rndSeed = 0;
-ServerState serverState;
+volatile ServerState serverState;
 pthread_t serverStateManager_thread;
 pthread_cond_t state_cond = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t state_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -21,6 +20,7 @@ void sigintHandler(int sig);
 int str2portNumber(char *portaServer);
 
 int main(int argc, char **argv) {
+    serverState = INIT; // server appena avviato
     char *dataFilename = NULL;
     int disconnettiMinuti = -1;
     char *dizionarioFilename = NULL; // TODO - controllare thread zombie!!!
@@ -39,11 +39,7 @@ int main(int argc, char **argv) {
     int portaServer = -1;
 
     // cattura il segnale SIGINT generato da CTRL-C
-    if (signal(SIGINT, sigintHandler) == SIG_ERR) {
-        fprintf(stderr, "Errore fatale nello spegnimento del server. " 
-        "Interruzione immediata.\n");
-        exit(EXIT_FAILURE);
-    }
+    signal(SIGINT, sigintHandler);
 
     // disabilita i messaggi automatici di errore di getopt()
     opterr = 0;
@@ -91,6 +87,12 @@ int main(int argc, char **argv) {
     // inizializza il server
     initServer(nomeServer, portaServer, dataFilename, durata, rndSeed, dizionarioFilename, disconnettiMinuti);
 
+    // spegni il server se arriva CTRL-C
+    while (serverState != SHUTDOWN); // attendi finche' non arriva lo stato SHUTDOWN
+    // avvia lo shutdown
+    shutdownServer();
+
+    // TODO - implementare shutdown() con un migliore sistema gestione messaggi uscita
     exit(EXIT_SUCCESS);
 }
 
@@ -99,10 +101,12 @@ void printUsage(const char *programName) {
     printf("Formato comando: %s nome_server porta_server [--matrici " "data_filename --durata durata_in_minuti] [--seed rnd_seed] [--diz " "dizionario] [--disconnetti-dopo tempo_in_minuti]\n", programName);
 }
 
+// TODO - se ci sono bug strani, usa volatile sig_atomic_t shutdown_flat
 void sigintHandler(int sig) {
-    printf("Ricevuto segnale %d - SIGINT - (CTRL-C)." 
+    printf("\nRicevuto segnale %d - SIGINT - (CTRL-C).\n"
     "Inizio spegnimento del server.\n", sig);
-    currentState = EXIT;
+    serverState = SHUTDOWN;
+    pthread_cond_broadcast(&state_cond); // sveglia tutti i thread in attesa
 }
 
 // converti una stringa in numero porta valido per il server [1025-65535]

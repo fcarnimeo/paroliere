@@ -2,10 +2,10 @@
 CC = gcc
 
 # Compiler flags
-CFLAGS = -std=c11
+CFLAGS = -Wall -Wextra -pedantic -std=c11
 
 # Target executable
-TARGET = main
+TARGET = paroliere_srv
 
 # Source directories
 SRC_DIRS = .

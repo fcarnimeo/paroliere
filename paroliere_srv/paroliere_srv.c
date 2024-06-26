@@ -3,10 +3,11 @@
 // variabili globali
 Matrix *currentMatrix = NULL;
 volatile ServerState currentState = INIT;
-pthread_mutex_t currentWord_mtx = PTHREAD_MUTEX_INITIALIZER;
 Dictionary *dictionary = NULL;
 TrieNode *dizionario = NULL;
 int durata;
+pthread_cond_T matrix_cond = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t matrix_mutex = PTHREAD_MUTEX_INITIALIZER;
 TrieNode *paroleValide = NULL;
 unsigned int rndSeed = 0;
 ServerState serverState;

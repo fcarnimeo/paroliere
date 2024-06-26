@@ -69,7 +69,7 @@ void countWordsAndMaxLength(FILE *file, size_t *wordCount, size_t *maxLength) {
 }
 
 // carica il file dizionario
-void loadDictionary(char *filename) {
+void loadDictionary(char *filename, TrieNode *dizionario) {
     // apri il file in lettura
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
@@ -83,37 +83,8 @@ void loadDictionary(char *filename) {
     size_t wordCount, maxLength;
     countWordsAndMaxLength(file, &wordCount, &maxLength);
 
-    // inizializza il nostro dizionario in memoria
-    // dictionary = (Dictionary *)malloc(sizeof(Dictionary)); // TODO - free()
-
-    // inizializza la trie
-    TrieNode *dizionario = createNode();
-/*
-    // controlla errori allocazione memoria
-    if (dictionary == NULL) {
-        fprintf(stderr, "Errore in allocazione memoria del dizionario.\n");
-        fclose(file);
-        exit(EXIT_FAILURE);
-    }
-    printf("Allocata memoria per il dizionario.\n");
-    dictionary->size = wordCount;
-    dictionary->maxWordLength = maxLength;
-    printf("wordCount: %ld\nmaxLength: %ld\n", dictionary->size, dictionary->maxWordLength);
-    dictionary->words = (char **)malloc((dictionary->size) * sizeof(char *));
-    // controlla errori allocazione memoria
-    if (dictionary->words == NULL) {
-        fprintf(stderr, "Errore in allocazione memoria del dizionario.\n");
-        fclose(file);
-        exit(EXIT_FAILURE);
-    }
-    else
-        printf("Allocata memoria per il dizionario.\n");
-
-*/
-    size_t index = 0;
+    size_t index = 0, len = 0;
     char *line = NULL;
-    size_t len = 0;
-
     // inserisci le parole dal file al dizionario in memoria
     while (getline(&line, &len, file) != -1 && index < wordCount) {
         char *trimmedLine = trimWhitespace(line);

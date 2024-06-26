@@ -15,7 +15,7 @@ void initServer(char *nomeServer, int portaServer, char *dataFilename, int durat
         // TODO genera matrici casuali
     // carica il dizionario parole valide
     if (dizionarioFilename != NULL)
-        loadDictionary(dizionarioFilename);
+        loadDictionary(dizionarioFilename, dizionario);
     // altrimenti carica dizionario di default
     // TODO
     printf("Inizio generazione parole valide.\n");

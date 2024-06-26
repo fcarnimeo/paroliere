@@ -7,7 +7,7 @@ void countWordsAndMaxLength(FILE *file, size_t *wordCount, size_t *maxLength);
 bool foundInDictionary(Dictionary *dictionary, const char *word);
 void freeDictionary(Dictionary *dictionary);
 bool isWordInDictionary(const char *word, Dictionary *d);
-void loadDictionary(char *filename);
+void loadDictionary(char *filename, TrieNode *dizionario);
 void toUpperCaseAndReplaceQU(char *str);
 char* trimWhitespace(char *str);
 

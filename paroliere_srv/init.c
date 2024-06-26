@@ -17,7 +17,7 @@ void initServer(char *nomeServer, int portaServer, char *dataFilename, int durat
     if (dizionarioFilename != NULL)
         loadDictionary(dizionarioFilename);
     // altrimenti carica dizionario di default
-    else; // TODO
+    // TODO
     printf("Inizio generazione parole valide.\n");
     generateValidWords(currentMatrix, dizionario, paroleValide);
 }

@@ -8,6 +8,7 @@
 #include <getopt.h>
 #include <limits.h>
 #include <pthread.h>
+#include "serverState.h"
 #include <signal.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -32,11 +33,14 @@
 
 extern Matrix *currentMatrix;
 extern volatile ServerState currentState;
-extern pthread_mutex_t currentState_mtx;
 extern pthread_mutex_t currentWord_mtx;
 extern Dictionary *dictionary;
 extern TrieNode *dizionario;
+extern int durata;
 extern TrieNode *paroleValide;
 extern unsigned int rndSeed;
+extern ServerState serverState;
+extern pthread_cond_t state_cond;
+extern pthread_mutex_t state_mutex;
 
 #endif // INCLUDES_H

@@ -16,8 +16,8 @@ typedef struct {
 
 typedef enum {
     INIT,
-    PLAY,
-    PAUSE,
+    PLAYING,
+    PAUSED,
     ERROR,
     EXIT   
 } ServerState;

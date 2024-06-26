@@ -3,12 +3,15 @@
 // variabili globali
 Matrix *currentMatrix = NULL;
 volatile ServerState currentState = INIT;
-pthread_mutex_t currentState_mtx = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t currentWord_mtx = PTHREAD_MUTEX_INITIALIZER;
 Dictionary *dictionary = NULL;
 TrieNode *dizionario = NULL;
+int durata;
 TrieNode *paroleValide = NULL;
 unsigned int rndSeed = 0;
+ServerState serverState;
+pthread_cond_t state_cond = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t state_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 // prototipi di funzioni
 void printUsage(const char *programName);
@@ -19,7 +22,7 @@ int main(int argc, char **argv) {
     char *dataFilename = NULL;
     int disconnettiMinuti = -1;
     char *dizionarioFilename = NULL; // TODO - controllare thread zombie!!!
-    int durata = 3; // minuti (default)
+    durata = 3; // minuti (default)
     // struct usata per contenere i nomi dei parametri per getopt()
     struct option long_options[] = {
         {"matrici", required_argument, NULL, 0},

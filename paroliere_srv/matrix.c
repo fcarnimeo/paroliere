@@ -12,6 +12,8 @@ void dfs(Matrix *m, bool visited[MATRIX_SIZE][MATRIX_SIZE], char *word, int row,
             //(validWords->size)++;
         }
     }
+    else
+        return;
 
     // direzioni di movimento consentite
     int rowDir[] = {0, 1, 0, -1};

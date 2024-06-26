@@ -32,13 +32,12 @@
 #define MATRIX_SIZE 4
 
 extern Matrix *currentMatrix;
-extern pthread_mutex_t currentMatrix;
 extern volatile ServerState currentState;
 extern Dictionary *dictionary;
 extern TrieNode *dizionario;
 extern int durata;
 extern pthread_cond_t matrix_cond;
-extern pthread_cond_t matrix_mutex;
+extern pthread_mutex_t matrix_mutex;
 extern TrieNode *paroleValide;
 extern unsigned int rndSeed;
 extern ServerState serverState;

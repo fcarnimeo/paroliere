@@ -6,7 +6,7 @@ volatile ServerState currentState = INIT;
 Dictionary *dictionary = NULL;
 TrieNode *dizionario = NULL;
 int durata;
-pthread_cond_T matrix_cond = PTHREAD_COND_INITIALIZER;
+pthread_cond_t matrix_cond = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t matrix_mutex = PTHREAD_MUTEX_INITIALIZER;
 TrieNode *paroleValide = NULL;
 unsigned int rndSeed = 0;

@@ -33,7 +33,6 @@ int main(int argc, char **argv) {
     int opt = -1;
     int portaServer = -1;
 
-/*
     // cattura il segnale SIGINT generato da CTRL-C
     if (signal(SIGINT, sigintHandler) == SIG_ERR) {
         fprintf(stderr, "Errore fatale nello spegnimento del server. " 
@@ -92,6 +91,8 @@ int main(int argc, char **argv) {
 
     // inizializza il server
     initServer(nomeServer, portaServer, dataFilename, durata, rndSeed, dizionarioFilename, disconnettiMinuti);
+
+    exit(EXIT_SUCCESS);
 }
 
 // stampa la corretta invocazione di `paroliere_srv`

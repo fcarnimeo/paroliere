@@ -20,6 +20,7 @@ void initServer(char *nomeServer, int portaServer, char *dataFilename, int durat
     // TODO
     printf("Inizio generazione parole valide.\n");
     generateValidWords(currentMatrix, dizionario, paroleValide);
+    printf("Parole valide caricate.\n");
 }
 
 // TODO - implementare per bene. Dopo che il socket e' partito,

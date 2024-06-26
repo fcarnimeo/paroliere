@@ -44,7 +44,6 @@ int main(int argc, char **argv) {
         fprintf(stderr, "SPENGI!\n");
         exit(EXIT_FAILURE);
     }
-    */
 
     // disabilita i messaggi automatici di errore di getopt()
     opterr = 0;

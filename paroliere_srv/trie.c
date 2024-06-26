@@ -3,6 +3,11 @@
 // funzione per creare un nodo della trie
 TrieNode* createNode() {
     TrieNode *node = (TrieNode *)malloc(sizeof(TrieNode));
+    // controlla errori per malloc()
+    if (node == NULL) {
+        fprintf(stderr, "Errore creazione nodo della trie.\n");
+        exit(EXIT_FAILURE);
+    }
     node->isEndOfWord = false;
     for (int i = 0; i < ALPHABET_SIZE; i++)
         node->children[i] = NULL;

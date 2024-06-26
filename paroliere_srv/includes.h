@@ -33,8 +33,8 @@ extern volatile ServerState currentState;
 extern pthread_mutex_t currentState_mtx;
 extern pthread_mutex_t currentWord_mtx;
 extern Dictionary *dictionary;
-extern TrieNode *dizionario;
-extern TrieNode *paroleValide;
+//extern TrieNode *dizionario;
+//extern TrieNode *paroleValide;
 extern unsigned int rndSeed;
 
 #endif // INCLUDES_H

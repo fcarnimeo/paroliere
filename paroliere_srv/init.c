@@ -9,10 +9,11 @@ void initServer(char *nomeServer, int portaServer, char *dataFilename, int durat
     if (dataFilename != NULL)
         loadMatrices(dataFilename);
     // altrimenti inizializza il seed
-    else
-        rndSeed = (unsigned int)time(NULL);
+    else {
+        rndSeed = (unsigned int) time(NULL);
         srand(rndSeed);
         // TODO genera matrici casuali
+    }
     // carica il dizionario parole valide
     if (dizionarioFilename != NULL)
         loadDictionary(dizionarioFilename, dizionario);

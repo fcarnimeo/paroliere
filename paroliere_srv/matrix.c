@@ -110,7 +110,7 @@ int processLine(char *line, Matrix *m, int expectedTokens) {
     char *token;
     int col = 0, row = 0, tokenCounter = 0;
 
-    printf("%p\n", &m->matrix[0][0]);
+    printf("%p\n", (void *)&m->matrix[0][0]);
     // processa il primo token
     token = strtok(line, delim);
     // scorri tutti i token

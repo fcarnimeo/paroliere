@@ -2,7 +2,7 @@
 
 // controlla se una parola e' gia' presente nel dizionario
 bool isWordInDictionary(const char *word, Dictionary *d) {
-    for (int i = 0; i < d->size; i++)
+    for (size_t i = 0; i < d->size; i++)
         if (strcmp(word, d->words[i]) == 0)
             return true;
     return false;

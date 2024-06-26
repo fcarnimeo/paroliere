@@ -3,7 +3,7 @@ CC = gcc
 
 # Compiler flags
 //CFLAGS = -Wall -Wextra -pedantic -std=c11
-CFLAGS = -std=c11
+CFLAGS = -std=c11 -lpthread
 
 # Target executable
 TARGET = paroliere_srv

@@ -2,18 +2,14 @@
 
 // ricerca dfs nella matrice
 void dfs(Matrix *m, bool visited[MATRIX_SIZE][MATRIX_SIZE], char *word, int row, int col, int length, TrieNode *dizionario, TrieNode *paroleValide) {//, int *wordCount) {
-    if (length >= MATRIX_SIZE && searchWord(dizionario, word)) {
-        // se la parola non e' gia' stata trovata
-        if (!searchWord(paroleValide, word)) {
-            // aggiungi la parola in coda
-            insertWord(paroleValide, word);
-            //strcpy(validWords->words[validWords->size], word);
-            // aumenta dimensione dizionario parole valide
-            //(validWords->size)++;
-        }
-    }
-    else
+    // caso base: parola non valida
+    if (length < MATRIX_SIZE || !searchWord(dizionario, word))
         return;
+
+    // se la parola non e' gia' stata trovata
+    if (!searchWord(paroleValide, word))
+        // aggiungi la parola in coda
+        insertWord(paroleValide, word);
 
     // direzioni di movimento consentite
     int rowDir[] = {0, 1, 0, -1};

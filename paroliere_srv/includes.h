@@ -1,6 +1,8 @@
 #ifndef INCLUDES_H
 #define INCLUDES_H
 
+#define  _POSIX_C_SOURCE 200809L
+
 #include <ctype.h>
 #include <fcntl.h>
 #include <getopt.h>

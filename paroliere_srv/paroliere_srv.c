@@ -39,11 +39,6 @@ int main(int argc, char **argv) {
         "Interruzione immediata.\n");
         exit(EXIT_FAILURE);
     }
-    // TODO - implementare routing di spegnimento
-    else {
-        fprintf(stderr, "SPENGI!\n");
-        exit(EXIT_FAILURE);
-    }
 
     // disabilita i messaggi automatici di errore di getopt()
     opterr = 0;

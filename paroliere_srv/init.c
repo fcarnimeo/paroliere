@@ -23,7 +23,7 @@ void initServer(char *nomeServer, int portaServer, char *dataFilename, int durat
     printf("Parole valide caricate.\n");
 
     // avvia il thread che gestisce lo stato del server
-    pthread_create(&serverStateManager_thread, NULL, serverStateManager(), NULL);
+    pthread_create(&serverStateManager_thread, NULL, serverStateManager, NULL);
 }
 
 // TODO - implementare per bene. Dopo che il socket e' partito,

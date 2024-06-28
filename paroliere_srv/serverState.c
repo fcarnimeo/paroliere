@@ -1,6 +1,6 @@
 #include "includes.h"
 
-void *serverStateManager(void) {
+void *serverStateManager(void *args) {
     while (true) {
         // entra nello stato PLAYING
         pthread_mutex_lock(&state_mutex);

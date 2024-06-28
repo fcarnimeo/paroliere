@@ -12,4 +12,3 @@ void shutdownServer(void) {
 
     printf("Server spento correttamente.\n");
 }
-

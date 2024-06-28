@@ -90,7 +90,7 @@ int main(int argc, char **argv) {
     initServer(nomeServer, portaServer, dataFilename, durata, rndSeed, dizionarioFilename, disconnettiMinuti);
 
     // spegni il server se arriva CTRL-C
-    while (serverState != SHUTDOWN); // attendi finche' non arriva lo stato SHUTDOWN
+    while (atomic_load(&serverState) != SHUTDOWN); // attendi finche' non arriva lo stato SHUTDOWN
     //while (!shuttingDown);
     // avvia lo shutdown
     shutdownServer();
@@ -108,7 +108,7 @@ void printUsage(const char *programName) {
 void sigintHandler(int sig) {
     printf("\nRicevuto segnale %d - SIGINT - (CTRL-C).\n"
     "Inizio spegnimento del server.\n", sig);
-    serverState = SHUTDOWN;
+    atomic_store(&serverState, SHUTDOWN);
     pthread_cond_broadcast(&state_cond); // sveglia tutti i thread in attesa
 }
 

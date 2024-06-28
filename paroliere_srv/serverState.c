@@ -5,9 +5,6 @@ void *serverStateManager(void *args) {
     struct timeval now;
 
     while (true) {
-        // variabile per il valore di ritorno della pthread_cond_timedwait
-        //int waitRet = 0;
-
         // entra nello stato PLAYING
         pthread_mutex_lock(&state_mutex);
         // sezione critica
@@ -19,6 +16,8 @@ void *serverStateManager(void *args) {
         timeToWait.tv_sec += durata * 60; // <durata> di attesa per lo stato PLAYING
         // imposta la pausa
         pthread_cond_timedwait(&state_cond, &state_mutex, &timeToWait);
+        if (serverState == SHUTDOWN)
+            break;
         pthread_mutex_unlock(&state_mutex);
 
         // entra nello stato PAUSED
@@ -33,6 +32,8 @@ void *serverStateManager(void *args) {
         timeToWait.tv_sec += 60; // 1 minuto di attesa per lo stato PAUSED
         // imposta la pausa
         pthread_cond_timedwait(&state_cond, &state_mutex, &timeToWait);
+        if (serverState == SHUTDOWN)
+            break;
         pthread_mutex_unlock(&state_mutex);
     }
     printf("serverStateManager_thread terminato.\n");

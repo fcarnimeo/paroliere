@@ -41,7 +41,7 @@ extern pthread_cond_t matrix_cond;
 extern pthread_mutex_t matrix_mutex;
 extern TrieNode *paroleValide;
 extern unsigned int rndSeed;
-extern volatile ServerState serverState;
+extern volatile _Atomic ServerState serverState;
 extern pthread_t serverStateManager_thread;
 extern pthread_cond_t state_cond;
 extern pthread_mutex_t state_mutex;

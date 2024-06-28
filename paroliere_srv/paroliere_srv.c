@@ -90,8 +90,8 @@ int main(int argc, char **argv) {
     initServer(nomeServer, portaServer, dataFilename, durata, rndSeed, dizionarioFilename, disconnettiMinuti);
 
     // spegni il server se arriva CTRL-C
-    //while (serverState != SHUTDOWN); // attendi finche' non arriva lo stato SHUTDOWN
-    while (!shuttingDown);
+    while (serverState != SHUTDOWN); // attendi finche' non arriva lo stato SHUTDOWN
+    //while (!shuttingDown);
     // avvia lo shutdown
     shutdownServer();
 

@@ -6,8 +6,10 @@ void initServer(char *nomeServer, int portaServer, char *dataFilename, int durat
     TrieNode *paroleValide = createNode();
     //initSocket(port);
     // carica matrici da file, se presente
-    if (dataFilename != NULL)
+    if (dataFilename != NULL) {
         loadMatrices(dataFilename);
+        currentMatrix = loadedMatrices->firstMatrix;
+    }
     // altrimenti inizializza il seed e alloca memoria per le matrici casuali
     else {
         rndSeed = (unsigned int)time(NULL);
@@ -19,10 +21,6 @@ void initServer(char *nomeServer, int portaServer, char *dataFilename, int durat
         loadDictionary(dizionarioFilename, dizionario);
     // altrimenti carica dizionario di default
     // TODO
-    printf("Inizio generazione parole valide.\n");
-    generateValidWords(currentMatrix, dizionario, paroleValide);
-    printf("Parole valide caricate.\n");
-
     // avvia il thread che gestisce lo stato del server
     pthread_create(&serverStateManager_thread, NULL, serverStateManager, NULL);
 }

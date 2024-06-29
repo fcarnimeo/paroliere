@@ -14,6 +14,11 @@ typedef struct {
     int matrix[MATRIX_SIZE][MATRIX_SIZE];
 } Matrix;
 
+typedef struct {
+    Matrix *firstMatrix;
+    int size;
+} Matrices;
+
 typedef enum {
     INIT,
     PLAYING,

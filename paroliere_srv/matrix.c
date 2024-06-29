@@ -60,7 +60,6 @@ void generateValidWords(Matrix *m, TrieNode *dizionario, TrieNode *paroleValide)
 void loadMatrices(char *filename) {
     size_t len = 0;
     char *line = NULL;
-    int linesCounter = 0;
 
     // apri il file descriptor
     int fd = open(filename, O_RDONLY);
@@ -88,9 +87,11 @@ void loadMatrices(char *filename) {
         exit(EXIT_FAILURE);
     }
     // alloca memoria per contenere tutte le strutture dati
-    currentMatrix = (Matrix *)malloc(sb.st_size * sizeof(int));
+    loadedMatrices = (Matrices *)malloc(sizeof(Matrices));
+    loadedMatrices->firstMatrix = (Matrix *)malloc(sb.st_size * sizeof(int));
+    loadedMatrices->size = 0;
     // controlla che la malloc() abbia avuto successo
-    if (currentMatrix == NULL) {
+    if (loadedMatrices->firstMatrix == NULL) {
         fprintf(stderr, "Errore in allocazione di memoria.\n");
         fclose(file);
         exit(EXIT_FAILURE);
@@ -98,7 +99,8 @@ void loadMatrices(char *filename) {
     // leggi riga per riga con getline()
     while (getline(&line, &len, file) != -1) {
         // linesCounter tiene traccia del numero di matrice da salvare
-        linesCounter += processLine(line, &currentMatrix[linesCounter], EXPECTED_TOKENS);
+        //loadedMatrices->size += processLine(line, &loadedMatrices[loadedMatrices->size], EXPECTED_TOKENS);
+        processLine(line, loadedMatrices, EXPECTED_TOKENS);
     }
     free(line); // libera memoria automaticamente allocata da getline()
     fclose(file);
@@ -106,10 +108,17 @@ void loadMatrices(char *filename) {
 }
 
 void loadNewMatrix(Matrix *m, char *dataFilename) {
+    // stato interno della funzione
+    static int curr = 0;
     if (dataFilename == NULL)
         generateRandomMatrix(currentMatrix);
-    else;
-        // sposta puntatore di currentMatrix
+    else if (curr <= loadedMatrices->size) {
+        // sposta puntatore di currentMatrix alla prossima matrice
+        ++currentMatrix;
+        ++curr;
+    }
+    else
+        currentMatrix -= loadedMatrices->size;
 }
 
 void printMatrix(Matrix *m) {
@@ -120,10 +129,12 @@ void printMatrix(Matrix *m) {
     }
 }
 
-int processLine(char *line, Matrix *m, int expectedTokens) {
+void processLine(char *line, Matrices *loadedMatrices, int expectedTokens) {
     const char *delim = " \n";
     char *token;
     int col = 0, row = 0, tokenCounter = 0;
+    static int totalLines = 0;
+    Matrix *m = loadedMatrices->firstMatrix + totalLines;
 
     printf("%p\n", (void *)&m->matrix[0][0]);
     // processa il primo token
@@ -147,21 +158,16 @@ int processLine(char *line, Matrix *m, int expectedTokens) {
         // individua il token successivo
         token = strtok(NULL, delim);
     }
-    for (int i = 0; i < MATRIX_SIZE; i++) {
-        for (int j = 0; j < MATRIX_SIZE; j++) {
-            printf("%c ", m->matrix[i][j]);
-        }
-        printf("\n");
-    }
+    printMatrix(m);
     // TODO - test
     //char *w = "YQTDUDT";
     //printf("%s: %d\n", w, findWord(m, w));
     // gestisci i valori di ritorno
     switch (tokenCounter) {
         case EXPECTED_TOKENS:
-            return 1;
+            totalLines++;
         case 0:
-            return 0;
+            return;
         default:
             fprintf(stderr, "File matrici malformato.\n"
             "Non contiene esattamente %d caratteri.\n", expectedTokens);

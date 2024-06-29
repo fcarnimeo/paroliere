@@ -39,6 +39,7 @@ extern char *dataFilename;
 extern Dictionary *dictionary;
 extern TrieNode *dizionario;
 extern int durata;
+extern Matrices *loadedMatrices;
 extern pthread_cond_t matrix_cond;
 extern pthread_mutex_t matrix_mutex;
 extern TrieNode *paroleValide;

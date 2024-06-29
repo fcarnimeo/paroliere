@@ -6,6 +6,7 @@ char *dataFilename = NULL;
 Dictionary *dictionary = NULL;
 TrieNode *dizionario = NULL;
 int durata;
+Matrices *loadedMatrices = NULL;
 pthread_cond_t matrix_cond = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t matrix_mutex = PTHREAD_MUTEX_INITIALIZER;
 TrieNode *paroleValide = NULL;

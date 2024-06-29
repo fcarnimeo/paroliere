@@ -12,6 +12,6 @@ void generateValidWords(Matrix *m, TrieNode *dizionario, TrieNode *paroleValide)
 void loadMatrices(char *filename);
 void loadNewMatrix(Matrix *m, char *dataFilename);
 void printMatrix(Matrix *m);
-int processLine(char *line, Matrix *m, int expectedTokens);
+void processLine(char *line, Matrices *matrices, int expectedTokens);
 
 #endif // MATRIX_H

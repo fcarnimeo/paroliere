@@ -8,10 +8,11 @@ void initServer(char *nomeServer, int portaServer, char *dataFilename, int durat
     // carica matrici da file, se presente
     if (dataFilename != NULL)
         loadMatrices(dataFilename);
-    // altrimenti inizializza il seed
+    // altrimenti inizializza il seed e alloca memoria per le matrici casuali
     else {
         rndSeed = (unsigned int)time(NULL);
         srand(rndSeed);
+        currentMatrix = (Matrix *)malloc(sizeof(Matrix));
     }
     // carica il dizionario parole valide
     if (dizionarioFilename != NULL)

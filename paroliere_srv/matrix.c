@@ -106,9 +106,11 @@ void loadMatrices(char *filename) {
 }
 
 void printMatrix(Matrix *m) {
-    for (int i = 0; i < MATRIX_SIZE; i++)
+    for (int i = 0; i < MATRIX_SIZE; i++) {
         for (int j = 0; j < MATRIX_SIZE; j++)
             printf("%c ", m->matrix[i][j]);
+        printf("\n");
+    }
 }
 
 int processLine(char *line, Matrix *m, int expectedTokens) {

@@ -90,12 +90,11 @@ int main(int argc, char **argv) {
     // inizializza il server
     initServer(nomeServer, portaServer, dataFilename, durata, rndSeed, dizionarioFilename, disconnettiMinuti);
 
-    // spegni il server se arriva CTRL-C
-    while (serverState != SHUTDOWN); // attendi finche' non arriva lo stato SHUTDOWN
-    //while (!shuttingDown);
+    // attendi finche' non arriva lo stato SHUTDOWN
+    while (serverState != SHUTDOWN)
+        sleep(UINT_MAX);
     // avvia lo shutdown
     shutdownServer();
-
     // TODO - implementare shutdown() con un migliore sistema gestione messaggi uscita
     exit(EXIT_SUCCESS);
 }

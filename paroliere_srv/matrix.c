@@ -105,6 +105,10 @@ void loadMatrices(char *filename) {
     printf("\nMatrici caricate.\n");
 }
 
+void loadNewMatrix(Matrix *m) {
+
+}
+
 void printMatrix(Matrix *m) {
     for (int i = 0; i < MATRIX_SIZE; i++) {
         for (int j = 0; j < MATRIX_SIZE; j++)

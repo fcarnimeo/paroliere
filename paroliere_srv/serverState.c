@@ -11,7 +11,7 @@ void *serverStateManager(void *args) {
         // sezione critica
         serverState = PAUSED;
         printf("Stato server: PAUSED\n");
-        loadNewMatrix(currentMatrix, dataFilename);
+        loadNewMatrix(currentMatrix++, dataFilename);
         printf("Inizio generazione parole valide.\n");
         generateValidWords(currentMatrix, dizionario, paroleValide);
         printf("Parole valide caricate.\n");

@@ -110,11 +110,10 @@ void loadMatrices(char *filename) {
 void loadNewMatrix(Matrix *m, char *dataFilename) {
     // stato interno della funzione
     static int curr = 0;
+    printf("curr: %d\tcurrentMatrix: %p\n", curr, (void *)currentMatrix);
     if (dataFilename == NULL)
         generateRandomMatrix(currentMatrix);
     else if (curr <= loadedMatrices->size) {
-        // sposta puntatore di currentMatrix alla prossima matrice
-        ++currentMatrix;
         ++curr;
     }
     else

@@ -105,6 +105,12 @@ void loadMatrices(char *filename) {
     printf("\nMatrici caricate.\n");
 }
 
+void printMatrix(Matrix *m) {
+    for (int i = 0; i < MATRIX_SIZE; i++)
+        for (int j = 0; j < MATRIX_SIZE; j++)
+            printf("%c ", m->matrix[i][j]);
+}
+
 int processLine(char *line, Matrix *m, int expectedTokens) {
     const char *delim = " \n";
     char *token;

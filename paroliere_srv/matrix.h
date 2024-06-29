@@ -10,7 +10,7 @@ void dfs(Matrix *m, bool visited[MATRIX_SIZE][MATRIX_SIZE], char *word, int row,
 void generateRandomMatrix(Matrix *m);
 void generateValidWords(Matrix *m, TrieNode *dizionario, TrieNode *paroleValide);
 void loadMatrices(char *filename);
-void loadNewMatrix(Matrix *m);
+void loadNewMatrix(Matrix *m, char *dataFilename);
 void printMatrix(Matrix *m);
 int processLine(char *line, Matrix *m, int expectedTokens);
 

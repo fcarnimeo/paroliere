@@ -2,6 +2,7 @@
 
 // variabili globali
 Matrix *currentMatrix = NULL;
+char *dataFilename = NULL;
 Dictionary *dictionary = NULL;
 TrieNode *dizionario = NULL;
 int durata;
@@ -23,7 +24,6 @@ int str2portNumber(char *portaServer);
 int main(int argc, char **argv) {
     shuttingDown = 0;
     serverState = INIT; // server appena avviato
-    char *dataFilename = NULL;
     int disconnettiMinuti = -1;
     char *dizionarioFilename = NULL; // TODO - controllare thread zombie!!!
     durata = 3; // minuti (default)

@@ -35,6 +35,7 @@
 #define MATRIX_SIZE 4
 
 extern Matrix *currentMatrix;
+extern char *dataFilename;
 extern Dictionary *dictionary;
 extern TrieNode *dizionario;
 extern int durata;

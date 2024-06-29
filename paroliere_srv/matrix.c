@@ -105,8 +105,11 @@ void loadMatrices(char *filename) {
     printf("\nMatrici caricate.\n");
 }
 
-void loadNewMatrix(Matrix *m) {
-
+void loadNewMatrix(Matrix *m, char *dataFilename) {
+    if (dataFilename == NULL)
+        generateRandomMatrix(currentMatrix);
+    else;
+        // sposta puntatore di currentMatrix
 }
 
 void printMatrix(Matrix *m) {

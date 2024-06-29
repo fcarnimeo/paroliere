@@ -20,8 +20,14 @@ void *serverStateManager(void *args) {
         if (serverState == SHUTDOWN)
             break;
 
+        // entra nello stato PAUSING
+        // sezione critica
+        serverState = PAUSING;
+        pthread_mutex_unlock(&state_mutex);
+
         // entra nello stato PAUSED
         // sezione critica
+        pthread_mutex_lock(&state_mutex);
         serverState = PAUSED;
         generateRandomMatrix(currentMatrix);
         printf("Stato server: PAUSED\n");

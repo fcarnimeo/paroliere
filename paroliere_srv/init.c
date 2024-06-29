@@ -4,6 +4,11 @@ void initServer(char *nomeServer, int portaServer, char *dataFilename, int durat
     printf("Inizio avvio server.\n");
     TrieNode *dizionario = createNode();
     TrieNode *paroleValide = createNode();
+    currentMatrix = (Matrix *)malloc(sizeof(Matrix));
+    if (currentMatrix == NULL) {
+        perror("currentMatrix");
+        exit(EXIT_FAILURE);
+    }
     //initSocket(port);
     // carica matrici da file, se presente
     if (dataFilename != NULL) {
@@ -14,7 +19,6 @@ void initServer(char *nomeServer, int portaServer, char *dataFilename, int durat
     else {
         rndSeed = (unsigned int)time(NULL);
         srand(rndSeed);
-        currentMatrix = (Matrix *)malloc(sizeof(Matrix));
     }
     // carica il dizionario parole valide
     if (dizionarioFilename != NULL)

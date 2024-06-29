@@ -7,6 +7,23 @@ void *serverStateManager(void *args) {
     // ottieni la mutex di stato, primissima iterazione
     pthread_mutex_lock(&state_mutex);
     while (true) {
+        // entra nello stato PAUSED
+        // sezione critica
+        serverState = PAUSED;
+        printf("Stato server: PAUSED\n");
+        loadNewMatrix(currentMatrix, dataFilename);
+        printf("Inizio generazione parole valide.\n");
+        generateValidWords(currentMatrix, dizionario, paroleValide);
+        printf("Parole valide caricate.\n");
+        // imposta la durata dello stato PAUSED
+        clock_gettime(CLOCK_REALTIME, &timeToWait);
+        timeToWait.tv_sec += 2; // 1 minuto di attesa per lo stato PAUSED
+        pthread_cond_broadcast(&state_cond);
+        // imposta la pausa
+        pthread_cond_timedwait(&state_cond, &state_mutex, &timeToWait); // mutex libera nel frattempo
+        if (serverState == SHUTDOWN)
+            break;
+
         // entra nello stato PLAYING
         // sezione critica
         serverState = PLAYING;
@@ -25,25 +42,7 @@ void *serverStateManager(void *args) {
         // entra nello stato PAUSING
         // sezione critica
         serverState = PAUSING;
-        pthread_mutex_unlock(&state_mutex);
-
-        // entra nello stato PAUSED
-        // sezione critica
-        pthread_mutex_lock(&state_mutex);
-        serverState = PAUSED;
-        printf("Stato server: PAUSED\n");
-        loadNewMatrix(currentMatrix, dataFilename);
-        printf("Inizio generazione parole valide.\n");
-        generateValidWords(currentMatrix, dizionario, paroleValide);
-        printf("Parole valide caricate.\n");
-        // imposta la durata dello stato PAUSED
-        clock_gettime(CLOCK_REALTIME, &timeToWait);
-        timeToWait.tv_sec += 2; // 1 minuto di attesa per lo stato PAUSED
-        pthread_cond_broadcast(&state_cond);
-        // imposta la pausa
-        pthread_cond_timedwait(&state_cond, &state_mutex, &timeToWait); // mutex libera nel frattempo
-        if (serverState == SHUTDOWN)
-            break;
+        printf("Stato server: PAUSING\n");
     }
     // rilascia la mutex di stato
     pthread_mutex_unlock(&state_mutex);

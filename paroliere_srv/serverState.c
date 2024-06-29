@@ -31,6 +31,7 @@ void *serverStateManager(void *args) {
         serverState = PAUSED;
         generateRandomMatrix(currentMatrix);
         printf("Stato server: PAUSED\n");
+        printf("Nuova matrice: %p\n", (void *)currentMatrix);
         pthread_cond_broadcast(&state_cond);
         // imposta la durata dello stato PAUSED
         clock_gettime(CLOCK_REALTIME, &timeToWait);

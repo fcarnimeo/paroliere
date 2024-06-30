@@ -32,6 +32,7 @@
 #include "struct.h"
 #include "trie.h"
 
+#define CLIENT_THREADS 16
 #define EXPECTED_TOKENS 16
 #define MATRIX_SIZE 4
 

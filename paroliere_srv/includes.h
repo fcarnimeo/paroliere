@@ -38,6 +38,7 @@ extern Matrix *currentMatrix;
 extern char *dataFilename;
 extern Dictionary *dictionary;
 extern TrieNode *dizionario;
+extern char *dizionarioFilename;
 extern int durata;
 extern Matrices *loadedMatrices;
 extern pthread_cond_t matrix_cond;

@@ -2,6 +2,13 @@
 
 void initServer(char *nomeServer, int portaServer, char *dataFilename, int durata, unsigned int rndSeed, char *dizionarioFilename, int disconnettiMinuti) {
     printf("Inizio avvio server.\n");
+    initMatrices();
+    initSocket(nomeServer, portaServer);
+    // avvia il thread che gestisce lo stato del server
+    pthread_create(&serverStateManager_thread, NULL, serverStateManager, NULL);
+}
+
+void initMatrices(void) {
     TrieNode *dizionario = createNode();
     TrieNode *paroleValide = createNode();
     currentMatrix = (Matrix *)malloc(sizeof(Matrix));
@@ -9,7 +16,6 @@ void initServer(char *nomeServer, int portaServer, char *dataFilename, int durat
         perror("currentMatrix");
         exit(EXIT_FAILURE);
     }
-    //initSocket(port);
     // carica matrici da file, se presente
     if (dataFilename != NULL) {
         loadMatrices(dataFilename);
@@ -24,14 +30,13 @@ void initServer(char *nomeServer, int portaServer, char *dataFilename, int durat
     if (dizionarioFilename != NULL)
         loadDictionary(dizionarioFilename, dizionario);
     // altrimenti carica dizionario di default
-    // TODO
-    // avvia il thread che gestisce lo stato del server
-    pthread_create(&serverStateManager_thread, NULL, serverStateManager, NULL);
+    else
+        loadDictionary("dict.txt", dizionario);
 }
 
 // TODO - implementare per bene. Dopo che il socket e' partito,
 // come accetto le connessioni dei client?
-void initSocket(int port) {
+void initSocket(char *nomeServer, int portaServer) {
     // crea il socket
     int server = socket(AF_INET, SOCK_STREAM, 0);
     // controlla errori in fase di creazione del socket
@@ -42,17 +47,17 @@ void initSocket(int port) {
     // imposta i parametri di rete per il server
     struct sockaddr_in serverAddress;
     serverAddress.sin_family = AF_INET;
-    serverAddress.sin_port = htons(port);
-    serverAddress.sin_addr.s_addr = inet_addr("127.0.0.1");
+    serverAddress.sin_port = htons(portaServer);
+    serverAddress.sin_addr.s_addr = inet_addr(nomeServer);
     // accoppia il socket con indirizzo e porta
     if (bind(server, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) == -1) {
         perror("Errore in fase di accoppiamento del socket.");
         exit(EXIT_FAILURE);
     }
-    // mette il server in ascolto
+    // metti il server in ascolto
     if (listen(server, 10) == -1) {
         perror("Errore in fase di ascolto del server.");
         exit(EXIT_FAILURE);
     }
-    printf("Server in ascolto sulla porta %d.\n", port);
+    printf("Server in ascolto sulla porta %d.\n", portaServer);
 }

@@ -5,6 +5,7 @@ Matrix *currentMatrix = NULL;
 char *dataFilename = NULL;
 Dictionary *dictionary = NULL;
 TrieNode *dizionario = NULL;
+char *dizionarioFilename = NULL;
 int durata;
 Matrices *loadedMatrices = NULL;
 pthread_cond_t matrix_cond = PTHREAD_COND_INITIALIZER;
@@ -26,7 +27,7 @@ int main(int argc, char **argv) {
     shuttingDown = 0;
     serverState = INIT; // server appena avviato
     int disconnettiMinuti = -1;
-    char *dizionarioFilename = NULL; // TODO - controllare thread zombie!!!
+    dizionarioFilename = "dict.txt"; // TODO - controllare thread zombie!!!
     durata = 3; // minuti (default)
     // struct usata per contenere i nomi dei parametri per getopt()
     struct option long_options[] = {

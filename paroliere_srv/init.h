@@ -3,7 +3,8 @@
 
 #include "struct.h"
 
+void initMatrices(void);
 void initServer(char *nomeServer, int portaServer, char *dataFilename, int durata, unsigned int rndSeed, char *dizionarioFilaname, int disconnettiMinuti);
-void initSocket(int port);
+void initSocket(char *nomeServer, int portaServer);
 
 #endif // INIT_H

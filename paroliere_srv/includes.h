@@ -23,6 +23,7 @@
 #include <sys/stat.h>
 #include <sys/socket.h>
 
+#include "clientHandler.h"
 #include "dictionary.h"
 #include "init.h"
 #include "matrix.h"

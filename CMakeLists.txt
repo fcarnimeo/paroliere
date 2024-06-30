@@ -20,4 +20,6 @@ add_executable(paroliere
         paroliere_srv/serverState.c
         paroliere_srv/serverState.h
         paroliere_srv/shutdown.c
-        paroliere_srv/shutdown.h)
+        paroliere_srv/shutdown.h
+        paroliere_srv/clientHandler.c
+        paroliere_srv/clientHandler.h)

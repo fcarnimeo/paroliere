@@ -111,11 +111,12 @@ void loadNewMatrix(Matrix *m, char *dataFilename) {
     // stato interno della funzione
     static int curr = 0;
     printf("curr: %d\tcurrentMatrix: %p\n", curr, (void *)currentMatrix);
-    if (dataFilename == NULL)
+    if (dataFilename == NULL) {
         generateRandomMatrix(currentMatrix);
-    else if (curr <= loadedMatrices->size) {
-        ++curr;
+        return;
     }
+    if (curr <= loadedMatrices->size)
+        ++curr;
     else
         currentMatrix -= loadedMatrices->size;
 }

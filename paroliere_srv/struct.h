@@ -19,6 +19,12 @@ typedef struct {
     int size;
 } Matrices;
 
+typedef struct {
+    char type;
+    unsigned int length;
+    char *data;
+} Message;
+
 typedef enum {
     INIT,
     PLAYING,

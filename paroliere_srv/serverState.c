@@ -12,12 +12,9 @@ void *serverStateManager(void *args) {
         serverState = PAUSED;
         printf("Stato server: PAUSED\n");
         loadNewMatrix(currentMatrix, dataFilename);
-        printf("Matrice in use: %p\n", (void *)currentMatrix);
-        printMatrix(currentMatrix);
         printf("Inizio generazione parole valide.\n");
         generateValidWords(currentMatrix, dizionario, paroleValide);
         printf("Parole valide caricate.\n");
-        ++currentMatrix;
         // imposta la durata dello stato PAUSED
         clock_gettime(CLOCK_REALTIME, &timeToWait);
         timeToWait.tv_sec += 1; // 1 minuto di attesa per lo stato PAUSED
@@ -31,6 +28,7 @@ void *serverStateManager(void *args) {
         // sezione critica
         serverState = PLAYING;
         printf("Stato server: PLAYING\n");
+        printMatrix(currentMatrix); // TODO - debug printf()
         // imposta la durata dello stato PLAYING
         clock_gettime(CLOCK_REALTIME, &timeToWait);
         timeToWait.tv_sec += durata * 2; // <durata> di attesa per lo stato PLAYING

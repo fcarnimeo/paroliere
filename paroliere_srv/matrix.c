@@ -110,15 +110,14 @@ void loadMatrices(char *filename) {
 void loadNewMatrix(Matrix *m, char *dataFilename) {
     // stato interno della funzione
     static int curr = 0;
-    printf("curr: %d\tcurrentMatrix: %p\n", curr, (void *)currentMatrix);
-    if (dataFilename == NULL) {
+    if (dataFilename == NULL)
         generateRandomMatrix(currentMatrix);
-        return;
+    else if (curr < loadedMatrices->size)
+        currentMatrix = loadedMatrices->firstMatrix + curr++;
+    else { // ricomincia dalla prima matrice
+        currentMatrix = loadedMatrices->firstMatrix;
+        curr = 1; // spostati gia' sulla prossima matrice
     }
-    if (curr <= loadedMatrices->size)
-        ++curr;
-    else
-        currentMatrix -= loadedMatrices->size;
 }
 
 void printMatrix(Matrix *m) {
@@ -133,8 +132,7 @@ void processLine(char *line, Matrices *loadedMatrices, int expectedTokens) {
     const char *delim = " \n";
     char *token;
     int col = 0, row = 0, tokenCounter = 0;
-    static int totalLines = 0;
-    Matrix *m = loadedMatrices->firstMatrix + totalLines;
+    Matrix *m = loadedMatrices->firstMatrix + loadedMatrices->size;
 
     printf("%p\n", (void *)&m->matrix[0][0]);
     // processa il primo token
@@ -165,7 +163,7 @@ void processLine(char *line, Matrices *loadedMatrices, int expectedTokens) {
     // gestisci i valori di ritorno
     switch (tokenCounter) {
         case EXPECTED_TOKENS:
-            totalLines++;
+            ++loadedMatrices->size;
         case 0:
             return;
         default:

@@ -93,6 +93,8 @@ void handleClientMessage(int clientSocket) {
         // controlla che il server non stia andando in pausa
         while (serverState == PAUSING)
             pthread_cond_wait(&state_cond, &state_mutex);
+        // TODO - importante!!!
+        // TODO - switch(serverState) && switch(clientState) && switch(msg.type)
 
         free(msg.data);
     }

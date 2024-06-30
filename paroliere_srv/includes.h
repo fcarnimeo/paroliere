@@ -36,6 +36,10 @@
 #define EXPECTED_TOKENS 16
 #define MATRIX_SIZE 4
 
+extern pthread_cond_t clientQueue_cond;
+extern pthread_mutex_t clientQueue_mutex;
+int clientQueue[CLIENT_THREADS];
+int clientQueue_size;
 extern Matrix *currentMatrix;
 extern char *dataFilename;
 extern Dictionary *dictionary;

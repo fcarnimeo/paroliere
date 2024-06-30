@@ -5,6 +5,7 @@ void initServer(char *nomeServer, int portaServer, char *dataFilename, int durat
     initMatrices();
     // avvia il thread che gestisce lo stato del server
     pthread_create(&serverStateManager_thread, NULL, serverStateManager, NULL);
+    // avvia la parte di rete
     initSocket(nomeServer, portaServer);
 }
 
@@ -34,8 +35,6 @@ void initMatrices(void) {
         loadDictionary("dict.txt", dizionario);
 }
 
-// TODO - implementare per bene. Dopo che il socket e' partito,
-// come accetto le connessioni dei client?
 void initSocket(char *nomeServer, int portaServer) {
     // crea il socket
     int server = socket(AF_INET, SOCK_STREAM, 0);
@@ -64,6 +63,7 @@ void initSocket(char *nomeServer, int portaServer) {
         perror("Errore in fase di ascolto del server.");
         exit(EXIT_FAILURE);
     }
+    printf("Fin qui ci siamo arrivati.\n");
     // crea i worker thread
     pthread_t threads[CLIENT_THREADS];
     int threadSockets[CLIENT_THREADS];

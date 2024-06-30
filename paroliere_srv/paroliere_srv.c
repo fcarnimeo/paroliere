@@ -1,6 +1,8 @@
 #include "includes.h"
 
 // variabili globali
+pthread_cond_t clientQueue_cond = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t clientQueue_mutex = PTHREAD_MUTEX_INITIALIZER;
 Matrix *currentMatrix = NULL;
 char *dataFilename = NULL;
 Dictionary *dictionary = NULL;
@@ -107,10 +109,13 @@ void printUsage(const char *programName) {
 
 // TODO - se ci sono bug strani, usa volatile sig_atomic_t shutdown_flat
 void sigintHandler(int sig) {
+    //pthread_mutex_lock(&state_mutex); // TODO - controlla deadlock?
     printf("\nRicevuto segnale %d - SIGINT - (CTRL-C).\n"
     "Inizio spegnimento del server.\n", sig);
     atomic_store(&serverState, SHUTDOWN);
     pthread_cond_broadcast(&state_cond); // sveglia tutti i thread in attesa
+    //pthread_mutex_unlock(&state_mutex);
+    pthread_cond_broadcast(&clientQueue_cond); // ?
 }
 
 // converti una stringa in numero porta valido per il server [1025-65535]
